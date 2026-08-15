@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0B1B27">
+<!-- CLEAN VERIFIED BUILD 2026-08-15 | source integrity sweep -->
+<title>Finals Ready — Pizzey Park</title>
+<style>
+  :root{
+    --court-navy:#132A3A;
+    --court-navy-deep:#0B1B27;
+    --third-teal:#1E7A6C;
+    --third-teal-light:#2FA391;
+    --finals-gold:#E7A93B;
+    --line-cream:#F3EEE2;
+    --defender-grey:#7C8798;
+    --danger:#C15B4A;
+    --font-display: 'Archivo Black', 'Arial Black', sans-serif;
+    --font-body: 'Work Sans', -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Work+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap');
+
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--court-navy-deep);
+    color:var(--line-cream);
+    font-family:var(--font-body);
+    min-height:100vh;
+    min-height:100dvh;
+    touch-action:manipulation;
+    overscroll-behavior-y:none;
+  }
+  button{touch-action:manipulation;}
+  .app{max-width:1180px;margin:0 auto;padding:0 0 calc(40px + env(safe-area-inset-bottom));}
+
+  /* HEADER */
+  header.top{
+    padding:calc(28px + env(safe-area-inset-top)) 20px 20px;
+    background:linear-gradient(180deg, var(--court-navy) 0%, var(--court-navy-deep) 100%);
+    border-bottom:3px solid var(--finals-gold);
+    text-align:center;
+    position:relative;
+  }
+  header.top .eyebrow{
+    font-family:var(--font-mono);
+    font-size:11px;
+    letter-spacing:3px;
+    color:var(--finals-gold);
+    text-transform:uppercase;
+  }
+  header.top h1{
+    font-family:var(--font-display);
+    font-size:clamp(28px,7vw,38px);
+    margin:6px 0 2px;
+    letter-spacing:0.5px;
+  }
+  header.top .sub{font-size:13px;color:#B7C2CC;}
+
+  /* NAV */
+  nav.tabs{
+    display:grid;
+    grid-template-columns:repeat(7,minmax(105px,1fr));
+    gap:0;
+    background:var(--court-navy);
+    position:sticky;
+    top:0;
+    z-index:10;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+  }
+  nav.tabs button{
+    background:none;border:none;color:#8FA1AD;
+    font-family:var(--font-body);font-weight:600;font-size:10.5px;
+    padding:12px 2px 10px;cursor:pointer;letter-spacing:0.3px;
+    border-bottom:3px solid transparent;
+    display:flex;flex-direction:column;align-items:center;gap:4px;
+    min-height:48px;
+  }
+  nav.tabs button .icon{font-size:18px;}
+  nav.tabs button.active{color:var(--line-cream);border-bottom-color:var(--finals-gold);}
+
+  section.panel{padding:26px 24px 12px;display:none;}
+  #panel-plan{max-width:1180px;margin:0 auto;}
+  @media(min-width:900px){#panel-plan>.card{padding:22px 24px}.clip-diagram-layout{grid-template-columns:minmax(360px,520px) minmax(360px,1fr);gap:26px}.clip-diagram-side{padding:16px}.clip-phase{font-size:13.5px;line-height:1.5}.movement-step{font-size:12.5px;line-height:1.45}}
+  @media(max-width:780px){nav.tabs{display:flex;overflow-x:auto;scrollbar-width:none}nav.tabs button{min-width:92px;flex:0 0 92px}section.panel{padding:20px 12px 10px}.app{max-width:100%}}
+  section.panel.active{display:block;}
+
+  h2.panel-title{
+    font-family:var(--font-display);
+    font-size:22px;
+    color:var(--finals-gold);
+    margin:0 0 4px;
+  }
+  p.panel-lede{color:#B7C2CC;font-size:14px;margin:0 0 20px;line-height:1.5;}
+
+  .card{
+    background:var(--court-navy);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:10px;
+    padding:16px;
+    margin-bottom:14px;
+  }
+  .card h3{margin:0 0 8px;font-size:15px;color:var(--line-cream);font-family:var(--font-display);letter-spacing:0.3px;}
+
+  /* THIS WEEK */
+  .week-toggle{display:flex;gap:8px;margin-bottom:16px;}
+  .week-toggle button{
+    flex:1;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);
+    background:transparent;color:#B7C2CC;font-weight:700;font-size:13px;cursor:pointer;
+  }
+  .week-toggle button.active{background:var(--third-teal);color:white;border-color:var(--third-teal);}
+
+  .day-row{
+    display:flex;gap:12px;align-items:flex-start;
+    padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06);
+  }
+  .day-row:last-child{border-bottom:none;}
+  .day-check{
+    width:26px;height:26px;border-radius:50%;border:2px solid var(--third-teal-light);
+    flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    font-size:14px;color:transparent;margin-top:2px;background:transparent;
+  }
+  .day-check.done{background:var(--third-teal-light);color:var(--court-navy-deep);}
+  .day-name{font-weight:700;font-size:13px;color:var(--finals-gold);width:64px;flex-shrink:0;}
+  .day-content{flex:1;}
+  .day-content .what{font-size:14px;font-weight:600;margin-bottom:2px;}
+  .day-content .learn{font-size:12.5px;color:#9AA8B3;}
+  .day-row.today{background:rgba(231,169,59,0.08);border-radius:8px;margin:0 -8px;padding:12px 8px;}
+
+
+  .this-week-clip-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px;}
+  .this-week-clip-card{background:rgba(0,0,0,.22);border:1px solid rgba(255,255,255,.10);border-radius:12px;overflow:hidden;}
+  .this-week-thumb{position:relative;width:100%;aspect-ratio:16/9;border:0;padding:0;background:#000;cursor:pointer;display:block;overflow:hidden;}
+  .this-week-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+  .this-week-thumb:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.72));}
+  .this-week-watch{position:absolute;left:14px;bottom:12px;z-index:2;background:var(--finals-gold);color:var(--court-navy-deep);font-weight:900;font-size:12px;padding:8px 12px;border-radius:7px;}
+  .this-week-clip-body{padding:13px;}
+  .this-week-code{font-size:11px;font-weight:900;letter-spacing:1px;color:var(--finals-gold);margin-bottom:3px;}
+  .this-week-clip-body h4{font-family:var(--font-display);font-size:16px;margin:0 0 8px;color:var(--line-cream);}
+  .this-week-clip-body p{font-size:12.5px;line-height:1.45;color:#c7d0d7;margin:5px 0;}
+  .this-week-use{color:#aebbc5!important;}
+  .this-week-actions{display:flex;gap:8px;margin-top:11px;flex-wrap:wrap;}
+  .week-watch-btn,.week-plan-btn{border-radius:7px;padding:9px 11px;font-size:11px;font-weight:900;cursor:pointer;min-height:36px;}
+  .week-watch-btn{background:var(--finals-gold);border:1px solid var(--finals-gold);color:var(--court-navy-deep);}
+  .week-plan-btn{background:transparent;border:1px solid var(--third-teal-light);color:var(--third-teal-light);}
+  @media(max-width:760px){.this-week-clip-grid{grid-template-columns:1fr}.day-row{flex-wrap:wrap}.day-content{min-width:calc(100% - 110px)}}
+
+  /* CLIPS */
+  .watch-toggle{
+    background:none;border:1px solid var(--third-teal-light);color:var(--third-teal-light);
+    font-size:11.5px;font-weight:700;padding:5px 10px;border-radius:6px;margin-top:6px;cursor:pointer;
+    min-height:32px;
+  }
+  .clip-list{margin-top:12px;display:none;}
+  .clip-list.open{display:block;}
+  .clip-card{
+    background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.08);border-radius:9px;
+    padding:12px;margin-bottom:10px;
+  }
+  .clip-card .clip-title{font-family:var(--font-display);font-size:13px;color:var(--finals-gold);margin-bottom:8px;}
+  .clip-thumb{
+    position:relative;display:block;border-radius:6px;overflow:hidden;margin-bottom:10px;
+    aspect-ratio:16/9;background:#000;
+  }
+  .clip-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+  .clip-thumb .play-overlay{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    background:rgba(0,0,0,0.25);
+  }
+  .clip-thumb .play-btn{
+    width:52px;height:52px;border-radius:50%;background:rgba(231,169,59,0.95);
+    display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--court-navy-deep);
+  }
+  .clip-thumb .watch-label{
+    position:absolute;bottom:6px;right:8px;background:rgba(0,0,0,0.6);color:white;
+    font-size:10.5px;padding:3px 7px;border-radius:5px;font-weight:700;
+  }
+  .clip-card .clip-section-label{font-size:10.5px;font-weight:700;letter-spacing:0.5px;color:var(--third-teal-light);text-transform:uppercase;margin:10px 0 4px;}
+  .clip-card ul{margin:0;padding-left:18px;font-size:12.5px;color:var(--line-cream);line-height:1.5;}
+  .clip-card p{margin:0;font-size:12.5px;color:var(--line-cream);line-height:1.5;}
+  .clip-check{
+    margin-top:10px;background:rgba(231,169,59,0.1);border-radius:6px;padding:10px 10px 12px;
+  }
+  .clip-check .cq{font-size:12.5px;font-weight:600;margin-bottom:8px;}
+  .clip-mc-opts{display:grid;gap:7px;}
+  .clip-mc-opt{
+    text-align:left;padding:9px 10px;border-radius:7px;border:1px solid rgba(255,255,255,0.15);
+    background:var(--court-navy);color:var(--line-cream);font-size:12.5px;cursor:pointer;min-height:40px;
+  }
+  .clip-mc-opt.correct{background:var(--third-teal);border-color:var(--third-teal-light);}
+  .clip-mc-opt.wrong{background:rgba(193,91,74,0.3);border-color:var(--danger);}
+  .clip-mc-opt[disabled]{cursor:default;}
+  .clip-mc-note{font-size:12px;color:var(--finals-gold);margin-top:8px;font-style:italic;display:none;}
+  .clip-mc-note.shown{display:block;}
+
+  /* FULLSCREEN VIDEO MODAL */
+  .video-modal{
+    position:fixed;inset:0;background:rgba(7,14,20,0.96);
+    display:none;flex-direction:column;z-index:1000;
+    padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+  .video-modal.open{display:flex;}
+  .video-modal-header{
+    display:flex;justify-content:space-between;align-items:center;padding:14px 16px;flex-shrink:0;
+  }
+  .video-modal-header .vm-title{font-family:var(--font-display);font-size:14px;color:var(--finals-gold);}
+  .video-modal-close{
+    background:rgba(255,255,255,0.1);border:none;color:var(--line-cream);
+    width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer;flex-shrink:0;
+  }
+  .video-modal-body{
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:10px 20px 30px;overflow-y:auto;gap:16px;
+  }
+  .video-modal-body img{
+    width:100%;max-width:520px;border-radius:12px;aspect-ratio:16/9;object-fit:cover;
+  }
+  .video-modal-body .vm-lens{font-size:13.5px;color:#B7C2CC;text-align:center;max-width:480px;line-height:1.5;}
+  .video-modal-watch{
+    background:var(--finals-gold);color:var(--court-navy-deep);border:none;
+    padding:14px 26px;border-radius:10px;font-weight:700;font-size:15px;cursor:pointer;
+    display:flex;align-items:center;gap:8px;text-decoration:none;min-height:48px;
+  }
+
+
+  .clip-diagram-item{padding:18px 0;border-top:1px solid var(--line);}
+  .clip-diagram-layout{display:grid;grid-template-columns:minmax(260px,390px) minmax(300px,1fr);gap:16px;align-items:start;}
+  .clip-diagram-side{position:sticky;top:10px;background:rgba(11,27,39,.62);border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:12px;}
+  .clip-diagram-side .clip-diagram-controls{margin-top:0;justify-content:flex-start;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .clip-diagram-side .clip-diagram-controls .primary,.clip-diagram-side .clip-diagram-controls .btn-link{grid-column:1 / -1;}
+  .clip-diagram-side .clip-diagram-controls button,.clip-diagram-side .clip-diagram-controls .btn-link{min-height:42px;display:flex;align-items:center;justify-content:center;text-align:center;}
+  .clip-diagram-side .pass-sequence-key{font-size:12px;color:#E7A93B;margin-top:10px;font-weight:700}.clip-phase{margin-top:10px;min-height:72px;text-align:left!important}.movement-guide{margin-top:12px;border-top:1px solid rgba(255,255,255,.12);padding-top:10px}.movement-guide-title{font-size:12px;font-weight:800;color:#E7A93B;margin-bottom:7px}.movement-step{display:grid;grid-template-columns:28px 1fr;gap:8px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:11.5px;line-height:1.35;color:#D8DEE3}.movement-step:last-child{border-bottom:0}.movement-step.active{background:rgba(231,169,59,.10);border-radius:6px;padding-left:5px;padding-right:5px}.movement-num{width:25px;height:25px;border-radius:50%;background:#E7A93B;color:#0B1B27;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:10px}.movement-step strong{color:#F3EEE2}.movement-detail{color:#AEBAC3;margin-top:2px}.current-instruction{font-size:13px;line-height:1.45;color:#F3EEE2;background:rgba(47,163,145,.10);border-left:3px solid #2FA391;border-radius:5px;padding:9px 10px;margin-top:9px}
+  @media(max-width:700px){.clip-diagram-layout{grid-template-columns:minmax(0,1fr) minmax(165px,46%);gap:8px}.clip-diagram-side{position:static;padding:8px}.clip-diagram-side .clip-diagram-controls{grid-template-columns:1fr}.clip-diagram-side .clip-diagram-controls .primary,.clip-diagram-side .clip-diagram-controls .btn-link{grid-column:auto}.clip-diagram-side .clip-diagram-controls button,.clip-diagram-side .clip-diagram-controls .btn-link{padding:7px 5px;font-size:11px;min-height:38px}.full-court-wrap{max-width:none}.clip-diagram-note{font-size:11.5px}}
+  .clip-diagram-item:first-child{border-top:0;}
+  .clip-diagram-title{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:4px;}
+  .clip-diagram-title strong{font-size:16px;}
+  .clip-diagram-title span{font-size:12px;color:#9AA8B3;}
+  .clip-diagram-note{font-size:13px;color:#C8D0D7;margin:0 0 10px;}
+  .full-court-wrap{background:#174B39;border:2px solid rgba(255,255,255,.28);border-radius:10px;padding:6px;max-width:390px;margin:0 auto;}
+  .full-court-svg{display:block;width:100%;height:auto;aspect-ratio:1/2;}
+  .clip-diagram-controls{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-top:9px;}
+  .clip-diagram-controls button{background:#122938;color:#F3EEE2;border:1px solid #39505E;border-radius:7px;padding:7px 10px;font-size:12px;font-weight:700;cursor:pointer;}
+  .clip-diagram-controls button.primary{background:var(--finals-gold);color:var(--court-navy-deep);border-color:var(--finals-gold);}
+  .clip-phase{font-size:12.5px;color:#D8DEE3;text-align:center;min-height:36px;margin-top:8px;}
+
+
+  .gameplan-thumb{position:relative;display:block;margin:0 0 12px;border-radius:9px;overflow:hidden;border:1px solid rgba(255,255,255,.14);background:#07131c;text-decoration:none}.gameplan-thumb img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}.gameplan-thumb .gp-watch{position:absolute;inset:auto 8px 8px 8px;background:rgba(7,19,28,.9);color:#fff;border:1px solid rgba(255,255,255,.22);border-radius:7px;padding:8px 10px;font-weight:900;font-size:12px;text-align:center}.gameplan-thumb:hover .gp-watch{background:#E7A93B;color:#0B1B27}.centre-line-note{font-size:11px;color:#E7A93B;margin:5px 0 0;font-weight:700}
+
+  /* GAME PLAN */
+  .rules-grid{display:grid;gap:10px;margin-bottom:20px;}
+  .rule-item{display:flex;gap:12px;align-items:flex-start;}
+  .rule-num{font-family:var(--font-display);font-size:20px;color:var(--third-teal-light);width:28px;flex-shrink:0;}
+  .rule-item .title{font-weight:700;font-size:14px;}
+  .rule-item .desc{font-size:12.5px;color:#9AA8B3;}
+
+  .calls-table{width:100%;border-collapse:collapse;margin-bottom:8px;}
+  .calls-table td{padding:8px 6px;font-size:12.5px;border-bottom:1px solid rgba(255,255,255,0.06);vertical-align:top;}
+  .calls-table td:first-child{font-family:var(--font-display);color:var(--finals-gold);font-size:13px;white-space:nowrap;padding-right:10px;}
+
+  .foundation-line{
+    text-align:center;font-family:var(--font-display);font-size:17px;color:var(--line-cream);
+    padding:18px 10px;margin:6px 0 22px;border-top:1px dashed var(--third-teal-light);border-bottom:1px dashed var(--third-teal-light);
+    line-height:1.5;
+  }
+
+  /* DIAGRAM / ANIMATION */
+  .diagram-block{margin-bottom:22px;}
+  .diagram-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+  .diagram-head h3{margin:0;}
+  .court-wrap{
+    background:var(--third-teal);
+    border-radius:10px;
+    padding:10px;
+    position:relative;
+  }
+  .court-svg{width:100%;height:auto;display:block;}
+  .diagram-controls{
+    display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;align-items:center;
+  }
+  .diagram-controls button{
+    background:var(--court-navy);color:var(--line-cream);border:1px solid rgba(255,255,255,0.15);
+    padding:8px 12px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;
+  }
+  .diagram-controls button.primary{background:var(--finals-gold);color:var(--court-navy-deep);border-color:var(--finals-gold);}
+  .diagram-controls label{
+    display:flex;align-items:center;gap:5px;font-size:12px;color:#B7C2CC;margin-left:auto;cursor:pointer;
+  }
+  .phase-caption{
+    font-family:var(--font-mono);font-size:12px;color:var(--line-cream);
+    background:rgba(0,0,0,0.25);border-radius:6px;padding:8px 10px;margin-top:8px;
+  }
+  .legend{
+    font-size:11px;color:#8FA1AD;margin-top:6px;font-family:var(--font-mono);
+    display:flex;flex-wrap:wrap;gap:10px;
+  }
+
+  /* POSITIONS */
+  .pos-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:18px;}
+  .pos-btn{
+    padding:10px 0;text-align:center;border-radius:8px;border:1px solid rgba(255,255,255,0.15);
+    background:var(--court-navy);color:var(--line-cream);font-family:var(--font-display);font-size:13px;cursor:pointer;
+  }
+  .pos-btn.selected{background:var(--finals-gold);color:var(--court-navy-deep);border-color:var(--finals-gold);}
+  .pos-detail .cue{font-family:var(--font-display);font-size:19px;color:var(--finals-gold);margin-bottom:8px;}
+
+  /* TRAINING */
+
+  .training-visual-card{display:grid;grid-template-columns:240px minmax(0,1fr);gap:18px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.08);align-items:stretch;}
+  .training-visual-card:last-child{border-bottom:none;}
+  .training-thumb{position:relative;display:block;min-height:150px;border-radius:14px;overflow:hidden;background:#07131b;border:1px solid rgba(255,255,255,.12);}
+  .training-thumb img{width:100%;height:100%;min-height:150px;object-fit:cover;display:block;}
+  .training-thumb .training-watch{position:absolute;left:10px;right:10px;bottom:10px;background:rgba(3,11,16,.9);border:1px solid rgba(255,255,255,.18);border-radius:9px;padding:9px 10px;text-align:center;font-weight:900;color:#fff;font-size:12px;letter-spacing:.4px;}
+  .training-copy{min-width:0;}
+  .training-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:7px;}
+  .training-time{font-family:var(--font-mono);font-size:12px;color:var(--finals-gold);font-weight:900;}
+  .training-code{font-size:11px;font-weight:900;padding:4px 7px;border-radius:999px;background:rgba(255,255,255,.08);}
+  .training-title{font-size:17px;font-weight:900;margin-bottom:7px;}
+  .training-why{font-size:13px;color:#b8c4cc;line-height:1.55;}
+  .training-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px;}
+  .training-actions a,.training-actions button{font-size:11px;font-weight:900;padding:8px 10px;border-radius:8px;text-decoration:none;}
+  @media(max-width:760px){.training-visual-card{grid-template-columns:1fr}.training-thumb{min-height:190px}.training-thumb img{min-height:190px}}
+
+  .timeline-row{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.06);}
+  .timeline-row:last-child{border-bottom:none;}
+  .timeline-time{font-family:var(--font-mono);font-size:12px;color:var(--finals-gold);width:70px;flex-shrink:0;}
+  .timeline-row .what{font-weight:700;font-size:13.5px;}
+  .timeline-row .why{font-size:12px;color:#9AA8B3;}
+  .absence-box{
+    background:rgba(193,91,74,0.12);border:1px solid var(--danger);border-radius:8px;padding:12px 14px;font-size:13px;margin-top:10px;
+  }
+
+  /* QUIZ */
+  .week-inline-quiz{margin-top:14px;padding:14px;border:1px solid rgba(255,255,255,.14);border-radius:14px;background:rgba(0,0,0,.18)}
+  .week-inline-quiz .wiq-title{font-weight:900;font-size:13px;letter-spacing:.08em;color:var(--finals-gold);margin-bottom:10px}
+  .week-inline-q{padding:10px 0;border-top:1px solid rgba(255,255,255,.08)}
+  .week-inline-q:first-of-type{border-top:0}
+  .week-inline-q .wiq-q{font-weight:800;font-size:14px;line-height:1.4;margin-bottom:8px}
+  .week-inline-opts{display:grid;gap:7px}
+  .week-inline-opt{width:100%;text-align:left;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:inherit;padding:9px 11px;border-radius:10px;cursor:pointer;font:inherit}
+  .week-inline-opt.correct{border-color:#61c99a;background:rgba(97,201,154,.18)}
+  .week-inline-opt.wrong{border-color:var(--danger);background:rgba(193,91,74,.18)}
+  .week-inline-feedback{display:none;margin-top:7px;font-size:12.5px;line-height:1.45;color:var(--line-cream)}
+  .week-inline-feedback.show{display:block}
+  .week-inline-progress{margin-top:10px;font-size:12px;font-weight:800;color:#9AA8B3}
+  .quiz-progress{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:12.5px;color:#9AA8B3;}
+  .quiz-q{margin-bottom:16px;}
+  .quiz-q .qtext{font-weight:700;font-size:14px;margin-bottom:10px;}
+  .quiz-opts{display:grid;gap:8px;}
+  .quiz-opt{
+    text-align:left;padding:11px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);
+    background:var(--court-navy);color:var(--line-cream);font-size:13.5px;cursor:pointer;
+    min-height:44px;
+  }
+  .quiz-opt.correct{background:var(--third-teal);border-color:var(--third-teal-light);}
+  .quiz-opt.wrong{background:rgba(193,91,74,0.3);border-color:var(--danger);}
+  .quiz-opt[disabled]{cursor:default;}
+  .quiz-feedback{font-size:12.5px;margin-top:8px;color:var(--finals-gold);font-style:italic;}
+  .quiz-result{
+    text-align:center;padding:26px 10px;font-family:var(--font-display);
+  }
+  .quiz-result .score{font-size:38px;color:var(--finals-gold);}
+  .quiz-result .msg{font-size:14px;color:var(--line-cream);font-family:var(--font-body);margin-top:6px;font-weight:600;}
+  .retake-btn{
+    display:block;margin:14px auto 0;background:var(--third-teal);color:white;border:none;
+    padding:10px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-family:var(--font-body);
+  }
+
+  .loading-note{text-align:center;color:#8FA1AD;font-size:12px;padding:30px;}
+
+  .deep-card{margin:18px 0;padding:18px;border:1px solid #2e4556;border-radius:14px;background:#102635;}
+  .deep-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap;}
+  .deep-code{font-weight:900;color:#E9B949;font-size:18px}.deep-status{font-size:12px;padding:5px 9px;border-radius:999px;background:#203b4d;color:#dbe7ee}
+  .deep-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}.deep-box{padding:12px;border-radius:10px;background:#0b1b27;border:1px solid #294252}.deep-box h4{margin:0 0 7px;color:#E9B949}.deep-box p{margin:5px 0;line-height:1.45}
+  .flow{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:12px 0}.flow .node{background:#17394a;border:1px solid #4d6b7c;border-radius:9px;padding:8px 10px;font-weight:700}.flow .decision{background:#4b3d18;border-color:#E9B949}.flow .arrow{color:#E9B949;font-weight:900}.kid-cue{font-size:18px;font-weight:900;color:#fff;background:#1a4a5f;padding:10px 12px;border-radius:10px;margin-top:10px}.source-note{font-size:12px;color:#b8c8d2;margin-top:8px}@media(max-width:760px){.deep-grid{grid-template-columns:1fr}}
+  /* Wide clean build: game-plan courts and instructions use desktop width; mobile tabs scroll horizontally. */
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="top">
+    <div class="eyebrow">Pizzey Park Netball Club</div>
+    <h1>FINALS READY</h1>
+    <div class="sub">Two-week finals playbook · Train · Recover · Compete</div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button data-tab="week" class="active"><span class="icon">📅</span>THIS WEEK</button>
+    <button data-tab="plan"><span class="icon">🏐</span>GAME PLAN</button>
+    <button data-tab="position"><span class="icon">📍</span>MY POSITION</button>
+    <button data-tab="training"><span class="icon">🏃</span>TRAINING</button>
+    <button data-tab="ready"><span class="icon">🍌</span>FINALS READY</button>
+    <button data-tab="gameday"><span class="icon">🔥</span>GAME DAY</button>
+    <button data-tab="quiz"><span class="icon">✅</span>QUIZ</button>
+  </nav>
+
+  <!-- THIS WEEK -->
+  <section class="panel active" id="panel-week">
+    <h2 class="panel-title">This week</h2>
+    <p class="panel-lede">Small daily lessons, not 17 links on a Sunday night. About 15 minutes a day.</p>
+
+    <div class="week-toggle">
+      <button data-week="1" class="active">WEEK ONE</button>
+      <button data-week="2">WEEK TWO</button>
+    </div>
+
+    <div class="card" id="weekOneCard">
+      <h3>Week One - watch the game plan before training</h3>
+      <div id="week1Days"></div>
+    </div>
+
+    <div class="card" id="weekTwoCard" style="display:none;">
+      <h3>Week Two - watch, understand and be ready to execute</h3>
+      <div id="week2Days"></div>
+    </div>
+  </section>
+
+  <!-- GAME PLAN -->
+  <section class="panel" id="panel-plan">
+    <h2 class="panel-title">Game plan</h2>
+    <p class="panel-lede">SPACE · OPTIONS · RESET · PRESS · NEXT BALL. Know the structure, then read what the game gives us.</p>
+
+    <div class="foundation-line">"One goes. One clears.<br>One gives the next option."</div>
+
+    <div class="card">
+      <h3>Our five rules</h3>
+      <div class="rules-grid" id="rulesGrid"></div>
+    </div>
+
+    <div class="card">
+      <h3>Our five calls</h3>
+      <table class="calls-table" id="callsTable"></table>
+    </div>
+
+    <div class="card"><h3>Centre-pass principles</h3><div class="rules-grid">
+      <div class="rule-item"><div class="rule-num">1</div><div><div class="title">ONE - WA first</div><div class="desc">WA attacks. GA holds, then becomes second option. C reads WA, GA, then RESET.</div></div></div>
+      <div class="rule-item"><div class="rule-num">2</div><div><div class="title">TWO - GA first</div><div class="desc">GA attacks first. WA holds width, then reoffers. Do not move together.</div></div></div>
+      <div class="rule-item"><div class="rule-num">3</div><div><div class="title">SPLIT</div><div class="desc">Create separation. One threatens short, one gives depth. C reads the defender.</div></div></div>
+      <div class="rule-item"><div class="rule-num">4</div><div><div class="title">CLEAR</div><div class="desc">First movement moves a defender. Second movement attacks the space left behind.</div></div></div>
+    </div></div>
+    <div class="card"><h3>Throw-ins</h3><p><strong>Every throw-in:</strong> forward option · second option · safe RESET.</p><p><strong>Sideline:</strong> create width and depth. Do not all run at the thrower.</p><p><strong>Attacking baseline:</strong> shooter hold, moving option, safety option. If nothing opens, reset and rebuild.</p><p><strong>Defensive baseline:</strong> secure the first pass, give width, then connect through court.</p></div>
+    <div class="card"><h3>Feed the shooters</h3><p><strong>Circle picture:</strong> GS, GA and feeder create separate angles, never one line.</p><p><strong>GS holds:</strong> maintain depth and make the defender choose. <strong>GA moves:</strong> attack top or side space. <strong>Feeder:</strong> see front, baseline and reset.</p><p>One shooter holds while one moves. If both are covered, RESET rather than forcing a hope ball.</p></div>
+    <div class="card"><h3>BOX defence + keepers</h3><p><strong>Closest defender:</strong> controlled pressure on the ball. <strong>Everyone else:</strong> protect the next pass and dangerous space.</p><p><strong>GK:</strong> PROTECT · TALK · START. <strong>GD:</strong> pressure circle entry, connect with GK, then become an attacker immediately after possession changes.</p><p>The box moves when the ball moves. No ball watching. No desperate lunges that break our shape.</p></div>
+    <div class="card"><h3>Transition</h3><div class="foundation-line" style="font-size:20px;">WIN → SECURE → EYES UP → SPREAD → GO</div><p>First safe pass. Midcourt connects. WA/GA get ahead. GS gives depth. When possession is lost: <strong>PRESS</strong> - nearest player pressures and everyone else finds a job.</p></div>
+
+    <div class="card">
+      <h3>Training clip movement library</h3>
+      <p>All previous movement drawings have been removed from this section. These are the rebuilt regulation-netball diagrams for all 17 clips. Use Play for the full sequence or step through each phase.</p>
+      <div id="clipDiagramLibrary"></div>
+    </div>
+
+    <div class="card">
+      <h3>Complete 17-clip deep-dive coaching pack</h3>
+      <p>Use these cards after watching each clip. Each one separates <strong>what the clip teaches</strong> from <strong>our three-pass team application</strong>, then gives the girls a simple decision flow.</p>
+      <div id="deepDivePack"></div>
+    </div>
+  </section>
+
+  <!-- MY POSITION -->
+  <section class="panel" id="panel-position">
+    <h2 class="panel-title">My position</h2>
+    <p class="panel-lede">Pick your position. This is saved on your device only — nothing is shared or sent anywhere.</p>
+
+    <div class="pos-grid" id="posGrid"></div>
+
+    <div class="card pos-detail" id="posDetail">
+      <p style="color:#9AA8B3;font-size:13px;">Tap a position above to see your cue.</p>
+    </div>
+  </section>
+
+  <!-- TRAINING -->
+  <section class="panel" id="panel-training">
+    <h2 class="panel-title">Thursday training - game plan only</h2>
+    <p class="panel-lede">Both weeks are dedicated to learning and executing our game plans. No separate fitness blocks or unrelated drills.</p>
+
+    <div class="week-toggle">
+      <button data-tweek="1" class="active">WEEK ONE</button>
+      <button data-tweek="2">WEEK TWO</button>
+    </div>
+
+    <div class="card" id="training1Card">
+      <h3>WEEK ONE - LEARN IT</h3><p><strong>SET UP -> MOVE -> THREE PASSES -> RESET -> REPEAT</strong></p>
+      <div id="training1"></div>
+    </div>
+    <div class="card" id="training2Card" style="display:none;">
+      <h3>WEEK TWO - EXECUTE IT</h3><p><strong>READ -> DECIDE -> EXECUTE -> RESET -> NEXT BALL</strong></p>
+      <div id="training2"></div>
+    </div>
+
+    <div class="absence-box">
+      <strong>Can't make Thursday?</strong> Watch this week's clips and read the diagram in the GAME PLAN tab before Saturday. Ask a teammate to talk you through what changed at training — you won't be behind, but come 10 minutes early Saturday for a quick walk-through.
+    </div>
+  </section>
+
+  <!-- GAME DAY -->
+  <section class="panel" id="panel-gameday">
+    <h2 class="panel-title">Game day</h2>
+    <p class="panel-lede">Arrive 45 minutes before the game. Be organised early so the last 30 minutes are about the team, warm-up and competing.</p>
+    <div class="foundation-line" style="font-size:21px;">ARRIVE READY → PHONE AWAY → TEAM SHEET → WARM UP → SWITCH ON → GO HARD</div>
+    <div class="card"><h3>45 minutes before - arrive ready</h3><div class="rules-grid">
+      <div class="rule-item"><div class="rule-num">1</div><div><div class="title">Be at the courts 45 minutes before first whistle</div><div class="desc">Shoes on, uniform ready and hair/jewellery sorted. Do not arrive at the start of warm-up.</div></div></div>
+      <div class="rule-item"><div class="rule-num">2</div><div><div class="title">Toilet before team preparation</div><div class="desc">Go early. Do not wait until the warm-up has started unless you genuinely need to.</div></div></div>
+      <div class="rule-item"><div class="rule-num">3</div><div><div class="title">Water bottle filled and courtside</div><div class="desc">Bring your own full bottle. Have it where you can reach it during breaks.</div></div></div>
+      <div class="rule-item"><div class="rule-num">4</div><div><div class="title">Phone away in the bag</div><div class="desc">Once you arrive, the phone goes away and stays away until after the game. Be present with the team.</div></div></div>
+      <div class="rule-item"><div class="rule-num">5</div><div><div class="title">Sign the team sheet</div><div class="desc">Complete the required team-sheet check early so nobody is chasing players just before the game.</div></div></div>
+    </div></div>
+    <div class="card"><h3>30 minutes before - warm-up starts</h3><p><strong>Everyone is ready to move at T-30.</strong> No shoes still being tied, no phones, no wandering off.</p><div class="rules-grid">
+      <div class="rule-item"><div class="rule-num">1</div><div><div class="title">Raise body temperature</div><div class="desc">Easy movement first, then dynamic mobility and controlled changes of direction.</div></div></div>
+      <div class="rule-item"><div class="rule-num">2</div><div><div class="title">Landing and footwork</div><div class="desc">Balanced landings, deceleration, pivots and sharp feet before full-speed court work.</div></div></div>
+      <div class="rule-item"><div class="rule-num">3</div><div><div class="title">Ball work</div><div class="desc">Sharp hands, accurate passing, leads, reoffers and communication. Build speed and intensity.</div></div></div>
+      <div class="rule-item"><div class="rule-num">4</div><div><div class="title">Position and unit connections</div><div class="desc">Shooters finish with feeds and shots. Defenders connect and talk. Midcourt checks timing and first options.</div></div></div>
+    </div></div>
+    <div class="card"><h3>Before the team talk - know your job</h3><p>Every player should already know the game plans. Game day is for reminders and reads, not learning a play for the first time.</p><div class="foundation-line" style="font-size:18px;">KNOW THE CALL → KNOW YOUR START → KNOW YOUR FIRST MOVE → KNOW THE RESET</div><p><strong>Starting seven and bench:</strong> everyone stays switched on. Know the opposition match-up, watch your position, listen to instructions and be ready to enter immediately.</p></div>
+    <div class="card"><h3>Final 5 minutes - compete</h3><p><strong>Talk positively.</strong> Eyes up. Strong body language. No worrying about court time, mistakes or the scoreboard before the game begins.</p><p><strong>First job:</strong> know the first thing your position must do well.</p><p><strong>After any mistake:</strong> NEXT BALL.</p><div class="foundation-line" style="font-size:20px;">BREATHE → ROLE → FIRST JOB → TEAM → NEXT BALL</div></div>
+    <div class="card"><h3>Game-day bag check</h3><p>Uniform · netball shoes · socks · full water bottle · simple familiar snack · any required personal medication managed with parent/carer · hair ties · weather layer/sunscreen as needed.</p><p><strong>Before leaving home:</strong> eat a familiar meal, hydrate, check game time and court, and make sure the whole kit is packed.</p></div>
+    <div class="card"><h3>Our commitment</h3><p style="font-size:16px;line-height:1.6;"><strong>We arrive prepared. We know the plans. We warm up properly. We support every teammate. We play hard, smart and together. When something goes wrong, we respond with the next ball.</strong></p></div>
+  </section>
+
+  <!-- FINALS READY -->
+  <section class="panel" id="panel-ready">
+    <h2 class="panel-title">Finals ready</h2>
+    <p class="panel-lede">Arrive fresh, fuelled and calm. Recovery is part of training.</p>
+    <div class="card"><h3>🍌 Fuel</h3><p><strong>Night before:</strong> normal balanced dinner with familiar carbohydrate foods such as pasta, rice, potatoes or bread, plus normal protein, vegetables and water.</p><p><strong>Game morning:</strong> familiar breakfast such as cereal and milk, toast and eggs, porridge, yoghurt and fruit, or toast with banana.</p><p><strong>Easy snacks:</strong> banana, fruit, yoghurt, toast or a simple sandwich. Bananas provide carbohydrate and potassium and can be a convenient familiar game-day snack.</p><p>Avoid experimenting with new foods on game day. Energy drinks are not part of this plan.</p></div>
+    <div class="card"><h3>💧 Hydrate</h3><p>Do not start the game thirsty. Drink regularly through the day, bring a full bottle and drink during breaks. After heavy sweating, fluids plus normal meals help replace fluid and sodium.</p></div>
+    <div class="card"><h3>🧘 Recover + soreness</h3><div class="foundation-line" style="font-size:20px;">COOL → DRINK → EAT → SLEEP</div><p>After training and games: 5-10 minutes easy movement, gentle mobility, normal food, water and good sleep. Friday is for freshness, not extra hard conditioning.</p><p><strong>Normal post-training soreness is different from injury.</strong> Significant pain, swelling, bruising, limping, instability or loss of function should be reported rather than treated as routine soreness.</p></div>
+    <div class="card"><h3>🩹 Injury awareness</h3><div class="foundation-line" style="font-size:20px;">STOP → TELL → ASSESS → RECOVER</div><p><strong>If something hurts or does not feel right:</strong> stop the activity and tell the coach or parent. Do not hide an injury or try to prove you can play through significant pain.</p><p><strong>Watch for:</strong> sudden or increasing pain, swelling, bruising, limping, reduced movement, weakness, instability, or difficulty putting weight through a limb.</p><p><strong>Return to play:</strong> an injured player should be properly assessed and should not return just because it is an important finals game. Follow the advice of the parent and appropriate qualified health professional.</p><p><strong>Head impact or suspected concussion:</strong> come off and report symptoms immediately. Do not return to play that day. Follow the applicable youth concussion protocol and obtain appropriate healthcare guidance before returning to sport.</p></div>
+    <div class="card"><h3>😴 Sleep</h3><p>Pack gear early. Wind down Friday night. Good sleep helps the body recover and helps decision making on Saturday.</p></div>
+    <div class="card"><h3>🧠 Mental ready</h3><div class="foundation-line" style="font-size:20px;">BREATHE → ROLE → FIRST JOB → TEAM</div><p><strong>Mistake routine:</strong> MISTAKE → RESET → NEXT BALL. No blame. No negative body language. Do the next job.</p><p><strong>Bench:</strong> watch your opponent and position, listen, support teammates and be ready to enter with a clear job.</p><p><strong>Finals pressure:</strong> when ahead, value possession. When behind, do not chase the scoreboard in one pass. Win the next ball.</p></div>
+    <div class="card"><h3>Friday checklist</h3><div class="rules-grid">
+      <div class="rule-item"><div class="rule-num">✓</div><div><div class="title">Game plan</div><div class="desc">Clips watched · four centre passes · throw-ins · PRESS · RESET · position role.</div></div></div>
+      <div class="rule-item"><div class="rule-num">✓</div><div><div class="title">Body</div><div class="desc">Light recovery · normal meals · water · familiar game snacks packed.</div></div></div>
+      <div class="rule-item"><div class="rule-num">✓</div><div><div class="title">Gear</div><div class="desc">Uniform · shoes · water bottle ready.</div></div></div>
+      <div class="rule-item"><div class="rule-num">✓</div><div><div class="title">Mind</div><div class="desc">Know my first job · support the team · good night's sleep.</div></div></div>
+    </div></div>
+    <div class="card"><h3>Safety note</h3><p>This playbook provides general team preparation guidance. Injury decisions take priority over finals selection. Court diagrams use standard seven-a-side netball thirds, centre circle and goal circles, with player movement kept within positional playing areas.</p></div>
+    <div class="card"><h3>Saturday</h3><p><strong>Before leaving:</strong> FUEL · WATER · GEAR · MINDSET.</p><p><strong>At the court:</strong> BREATHE · ROLE · FIRST JOB · TEAM.</p><div class="foundation-line" style="font-size:24px;">WIN THE NEXT BALL.</div></div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="panel" id="panel-quiz">
+    <h2 class="panel-title">Quiz</h2>
+    <p class="panel-lede">Short learning checks. No names, no rankings — just for you.</p>
+
+    <div class="week-toggle">
+      <button data-qweek="1" class="active">WEEK ONE</button>
+      <button data-qweek="2">WEEK TWO</button>
+    </div>
+
+    <div class="card" id="quizCard">
+      <div class="quiz-progress">
+        <span id="quizProgressText">Question 1 of 5</span>
+        <span id="quizBestText"></span>
+      </div>
+      <div id="quizBody"></div>
+    </div>
+  </section>
+
+</div>
+
+<div class="video-modal" id="videoModal">
+  <div class="video-modal-header">
+    <div class="vm-title" id="vmTitle">Clip</div>
+    <button class="video-modal-close" id="vmClose">✕</button>
+  </div>
+  <div class="video-modal-body">
+    <img id="vmThumb" src="" alt="Video thumbnail">
+    <p class="vm-lens" id="vmLens"></p>
+    <a class="video-modal-watch" id="vmWatchLink" href="#" target="_blank" rel="noopener">▶ Watch on YouTube</a>
+  </div>
+</div>
+
+<script>
+(function(){
+
+// ---------- DATA ----------
+const week1Days = [
+  {day:"Sun", what:"5-min intro + Clips A1 & A2", learn:"What is space? Why shouldn't everyone run to the ball?", clips:["A1","A2"]},
+  {day:"Mon", what:"Clips A3 & A4 + ONE diagram", learn:"First option versus second option", clips:["A3","A4"]},
+  {day:"Tue", what:"Clips A5 & A6 + reoffer animation", learn:"Pass — clear — reoffer", clips:["A5","A6"]},
+  {day:"Wed", what:"Clips A7 & A8 + 5-question mini quiz", learn:"Timing and change of pace", clips:["A7","A8"]},
+  {day:"Thu", what:"1-hour team training", learn:"Teach ONE, TWO, CLEAR and RESET on court", today:true, clips:[]},
+  {day:"Fri", what:"Fever analysis + game-day challenge", learn:"Find players moving before they receive", clips:["E1"]},
+  {day:"Sat", what:"Match", learn:"Three cues only: SPACE — OPTIONS — RESET", clips:[]},
+];
+const week2Days = [
+  {day:"Sun", what:"Defensive Clips D1 & D2", learn:"Pressure versus chasing", clips:["D1","D2"]},
+  {day:"Mon", what:"Clips A9 & A10", learn:"Reset and full-court transition", clips:["A9","A10"]},
+  {day:"Tue", what:"Master the Midcourt lesson", learn:"Depth, timing and the loaded-stack idea", clips:["E2"]},
+  {day:"Wed", what:"Clips A11–A13 + transition quiz", learn:"Linking thirds and giving options", clips:["A11","A12","A13"]},
+  {day:"Thu", what:"1-hour team training", learn:"PRESS, turnover conversion, match scenarios", clips:[]},
+  {day:"Fri", what:"Finals quiz + position page", learn:"Know your role in our team rules", clips:[]},
+  {day:"Sat", what:"Match / finals", learn:"PRESS — SECURE — NEXT BALL", clips:[]},
+];
+
+// Full clip library — YouTube ID, learning lens, what to look for, why it matters,
+// how we use it in our game, and a check-me question with the correct answer explained.
+const clipData = {
+  A1:{ id:"faygCfGqPbs", lens:"Creating a first lead",
+    lookFor:["Where the attacker starts from","What space she attacks","Whether her movement creates space for someone else"],
+    why:"At this level, the first breakthrough is getting the girls to stop thinking \"I need to get the ball\" and start thinking \"I need to help create a good option.\"",
+    use:"This is exactly our ONE call: WA attacks one space, and GA must not follow her into it — GA's job is to create a different option.",
+    check:{q:"If WA drives into the middle, should GA immediately run into the same middle space?",
+      opts:["Yes, follow her in to support","No — create another option or clear","Only if GA is the faster runner"], correct:1,
+      note:"Following WA into the same space removes an option instead of creating one."} },
+  A2:{ id:"eQ4pb_Tk708", lens:"Centre-pass timing",
+    lookFor:["How early a lead starts","How the ball carrier reads it","Whether another player preserves space instead of crowding it"],
+    why:"Two players moving to the same space at the same time cancels each other out. Timing is what makes a second option actually useful.",
+    use:"Use this alongside ONE — count \"ONE... TWO\" in your head, never \"everybody go\" at once.",
+    check:{q:"Why does GA sometimes have to wait?",
+      opts:["Because GA is slower than WA","So WA's first lead has room and GA can become the second option","Because the umpire tells her to"], correct:1,
+      note:"Waiting gives WA's lead room to work — that's what makes GA a real second option."} },
+  A3:{ id:"MPvMKhmQn_o", lens:"Corner Stack - Defender Up",
+    lookFor:["WA and GA holding the stack on the attacking transverse line","WD or GD driving forward from the defensive transverse line after the whistle","GS coming out to link while GA punches hard into the goal circle"],
+    why:"The stack occupies the normal centre-pass defenders and creates a surprise lane for WD or GD. GS then links outside the circle so GA can attack the space left inside.",
+    use:"STACK HOLDS. DEFENDER UP. GS OUT. GA PUNCH. Pass 1 C to WD/GD, Pass 2 WD/GD to GS, Pass 3 GS to GA in the circle.",
+    check:{q:"What is the key timing in Corner Stack - Defender Up?",
+      opts:["WA and GA both break for the ball","The stack holds while WD/GD drives, then GS comes out and GA punches in","GS stays under the post for all three passes"], correct:1,
+      note:"Hold the stack first. Defender up receives. GS comes out. GA punches into the circle."} },
+  A4:{ id:"1pNfv2VMeJo", lens:"Pass — clear — reoffer",
+    lookFor:["What the passer does the instant the ball leaves her hands","Whether she clears space or reoffers into a new one","How quickly this happens after the pass"],
+    why:"Your job is not finished when the ball leaves your hands. Standing still after a pass gives the defence a free look.",
+    use:"This is our core team habit after every single pass: clear or reoffer, no exceptions.",
+    check:{q:"After I pass, what are my two choices?",
+      opts:["Stand and admire it","Clear or reoffer","Call for the ball straight back"], correct:1,
+      note:"Your job isn't finished when the ball leaves your hands."} },
+  A5:{ id:"QibT9ilRPfE", lens:"Width and depth",
+    lookFor:["Whether all the attackers are standing on one line","Who is providing width","Who is providing depth","Who is providing support"],
+    why:"Three attackers standing shoulder to shoulder are easy to defend — they remove passing angles instead of creating them.",
+    use:"This shapes our whole attacking picture: someone wide, someone deep, someone in support, never all three in the same lane.",
+    check:{q:"Why don't we want three attackers standing shoulder-to-shoulder across court?",
+      opts:["It makes them easier to defend and removes passing angles","It looks untidy on video","It's against the rules of netball"], correct:0,
+      note:"One defender can cover all three if they're stacked on the same line."} },
+  A6:{ id:"FSsnzwvo3pE", lens:"Zone defence analysis - how a connected zone closes attacking space",
+    lookFor:["How the zone shifts when the ball changes side","Which defender pressures the ball and which defenders protect space","How the back defenders protect circle entry"],
+    why:"A zone works only when the defenders move as one connected unit. Chasing the ball individually opens gaps.",
+    use:"Use this clip for our connected zone: nearest defender pressures, everyone else protects the next dangerous space.",
+    check:{q:"Should GS come all the way out simply because the ball is outside the circle?",
+      opts:["Yes, always chase the ball","Not automatically — she can create value by keeping depth and occupying a defender","No, she should never leave the post"], correct:1,
+      note:"Holding depth can be just as valuable as chasing the ball."} },
+  A7:{ id:"9HEclbaYuOk", lens:"Centre-pass defence strategies",
+    lookFor:["How defenders set before the centre-pass whistle","How the first receiving lane is denied","How defenders recover goal-side after the first pass"],
+    why:"Centre-pass defence is about taking away the easy first option and then protecting the next pass as a unit.",
+    use:"Use this clip for our centre-pass defence: deny first space, protect second space, recover goal-side.",
+    check:{q:"Is our goal to run at maximum speed all the time?",
+      opts:["Yes, always sprint","No — we want to change speed at the right moment","Only in the final quarter"], correct:1,
+      note:"A change of pace unbalances a defender more than constant sprinting."} },
+  A8:{ id:"UpBmG7wCszw", lens:"Three visible options and decision making",
+    lookFor:["How many visible passing options the ball carrier has at once","Forward option, alternative option, safe reset — count all three"],
+    why:"Our target is always three visible options: forward, alternative, and a safe reset. Everyone on court is responsible for creating those, not just the ball carrier.",
+    use:"Team application: forward option, second option and reset must appear at different angles. The court diagram now shows this at circle edge, not as a centre-pass pattern.",
+    check:{q:"Who is responsible for making sure the ball carrier has options?",
+      opts:["Only the Centre","All of us — not just the player with the ball","Only the shooters"], correct:1,
+      note:"Everyone on court has a role in creating options, not just whoever's closest."} },
+  D1:{ id:"DdAUEouSuh8", lens:"Body position and pressure (not just steals)",
+    lookFor:["The defender's feet","The defender's body position","Whether she stays balanced enough to recover if beaten"],
+    why:"Good defence is measured by whether we make the opposition's next pass difficult — not just by counting interceptions.",
+    use:"This is our PRESS foundation: closest player pressures with controlled feet, not a desperate lunge for the ball.",
+    check:{q:"Is good defence only measured by interceptions?",
+      opts:["Yes, intercepts are the only measure","No — making the opposition's next pass difficult is successful defence too","Only if you're a circle defender"], correct:1,
+      note:"Pressure without an intercept still counts as good defence."} },
+  D2:{ id:"f6kNl-Ixn_s", lens:"Defend as a unit",
+    lookFor:["A defender away from the ball","What she's doing to help even though she isn't marking the ball carrier"],
+    why:"Team defence involves everyone on court, not only the two circle defenders. Pressure on the ball only works if everyone else is doing their job too.",
+    use:"This is \"defend together\" — the closest player pressures, everyone else protects the next pass.",
+    check:{q:"If C pressures the ball, should WD and GD stop working because they aren't marking the ball carrier?",
+      opts:["Yes, they can relax","No — their work makes the pressure useful","Only WD needs to keep working"], correct:1,
+      note:"Team defence only works if everyone plays their part, not just whoever's on the ball."} },
+  E1:{ id:"HuFJ_u3LjIM", lens:"Spot-the-principles (elite footage, not a copy-the-team lesson)",
+    lookFor:["A player moving before she's needed","A player clearing a useful space","A change from controlled possession to acceleration","A safe option kept behind the ball","Movement immediately after a pass"],
+    why:"This isn't about copying an elite team — it's about learning to see the same principles we train every week, just played at a faster speed.",
+    use:"Player challenge: count one occasion where an off-ball player helps create a pass without ever receiving it herself.",
+    check:{q:"Who should you watch if you really want to understand an attacking system?",
+      opts:["Only the player with the ball","Players without the ball as well as the player with it","Only the shooters near goal"], correct:1,
+      note:"Off-ball movement is often what creates the space in the first place."} },
+  A9:{ id:"L0bSo0paaG8", lens:"Reset before the risky pass",
+    lookFor:["A moment where the obvious attacking route is unavailable","What options remain once that happens"],
+    why:"RESET doesn't mean we've stopped attacking — it means we're rebuilding it properly instead of forcing a bad pass into two defenders.",
+    use:"This is our RESET call in action: use the player behind or sideways, then rebuild.",
+    check:{q:"Does RESET mean we have stopped attacking?",
+      opts:["Yes, it's a failure","No — it means we are rebuilding our attack","Yes, it means giving up possession on purpose"], correct:1,
+      note:"A reset pass backwards can help us go forward for the next three."} },
+  A10:{ id:"T9d_nWvTZ-g", lens:"Linking the whole court",
+    lookFor:["Your own position rather than the ball","What defenders do straight after winning it","What shooters do straight after a turnover"],
+    why:"Defenders are part of our attack, and shooters are our first defenders after a turnover — nobody gets to switch off just because the ball is elsewhere.",
+    use:"This is our transition rule: win it, secure it, eyes up, spread, go forward if safe — everyone moves, not just whoever's near the ball.",
+    check:{q:"When GK wins the ball, are GA and WA allowed to stand and watch?",
+      opts:["Yes, it's not their job yet","No — they must create the next court options","Only if they're tired"], correct:1,
+      note:"Shooters become the first attackers as soon as we win the ball back."} },
+  A11:{ id:"Vi3K0YgsL4o", lens:"Circle-entry triangle",
+    lookFor:["Three different attacking positions around the circle, not one line","Whether one defender could see and cover all three at once"],
+    why:"If GS, GA and WA all stand in the same line, one defender can cover all three. Width and depth give the feeder better passing angles and more choices.",
+    use:"Team application: C feeds from the goal-circle edge, WA holds width outside, GA works front space and GS holds deep. Keep the triangle visible.",
+    check:{q:"What do width and depth give the feeder?",
+      opts:["Better passing angles and more choices","A rest before the next phase","Nothing — position doesn't matter"], correct:0,
+      note:"Spread positions stop one defender from covering everyone at once."} },
+  E2:{ id:"Wb0xU37dxUM", lens:"Master the Midcourt — depth and timing (verified: loaded-stack analysis, Swifts/GIANTS/Vixens)",
+    lookFor:["Who moves first","Who deliberately does not move first","Where the second player goes after the defender reacts","What space opens up because of the first movement"],
+    why:"Several players can start close together or on one side, then use correctly timed movement to open different spaces. We don't need the full elite system — just the idea behind it.",
+    use:"Our junior translation: first movement moves a defender. Second movement attacks what that defender has left. That's the entire lesson.",
+    check:{q:"Why might a player make a strong lead even if she knows she probably won't receive the pass?",
+      opts:["To tire out the defender physically","To move a defender and open space for her teammate","Because the coach said to always run"], correct:1,
+      note:"First movement moves a defender. Second movement attacks what that defender has left."} },
+  A12:{ id:"LltXBNnzcDw", lens:"Split landing - balanced landing technique",
+    lookFor:["How the player lands with feet split for balance","How she controls her body before the next action","How landing shape helps her see and pass safely"],
+    why:"This clip is about landing technique, not a give-and-go pattern. A controlled split landing helps you stop safely, stay balanced and prepare for the next pass.",
+    use:"Our team application is: receive under control, land balanced, get eyes up, then choose the safest next pass. The three-pass diagram is our continuation after the landing skill, not a claim that the clip shows those three passes.",
+    check:{q:"What is the main lesson in A12?",
+      opts:["Land under control and balanced before the next action","Always pass straight back to the same player","Sprint before both feet are controlled"], correct:0,
+      note:"A12 is a split-landing technique clip. Balance first, then see and decide."} },
+  A13:{ id:"RcUyRgN9kUU", lens:"Decision-making under pressure",
+    lookFor:["Pause before the pass happens and predict where you'd go, and why","Then watch what actually happens and compare"],
+    why:"The goal isn't guessing the video correctly — it's explaining a decision. Recognising what the game is giving you matters more than following a pattern exactly.",
+    use:"This is the real test of our whole game plan: can you recognise when the safe option has changed, not just recite ONE/TWO/CLEAR/RESET?",
+    check:{q:"What's more important: following our pattern exactly, or recognising that the safe option has changed?",
+      opts:["Following the pattern exactly, always","Recognising what the game is giving us","Passing to whoever shouts loudest"], correct:1,
+      note:"The goal isn't guessing correctly — it's explaining a decision based on what's actually happening."} },
+};
+
+
+const deepDive = {
+ A1:{status:'FIRST-LEAD GAME PLAN',purpose:'Teach one clean first lead, then keep the ball moving forward through different players. A1 is about creating the first clear option, not the C-drive lob finish.',seq:['C starts in centre circle','WA makes the FIRST strong diagonal lead','PASS 1 C → WA','GA stays out of WA lane, then drives into the next forward channel','PASS 2 WA → GA','GS holds deep and presents late','PASS 3 GA → GS if safe'],alt:'WA covered? C checks GA as the second legal centre-third option. After WA receives, if GA is covered, WA uses C as the reset. Do not force the feed to GS.',cue:'WA FIRST. GA NEXT. GS LAST.',practice:'Run C, WA, GA, GS. WA must clearly win first space. GA cannot move into WA lane. Add defenders only after the spacing is clean.'},
+ A2:{status:'ONE-PLAYER-OFF-LINE TIMING PLAN',purpose:'Teach delayed timing. One attacker goes first, the second waits, then attacks the space created by the defender reaction. This plan finishes through C driving to the circle edge.',seq:['C starts centre pass','WA makes the early movement to shift the defence','GA WAITS, then explodes into the opposite centre-third channel','PASS 1 C → GA','C immediately drives hard to the attacking circle edge','PASS 2 GA → C','GS HOLDS deep','PASS 3 C → GS high lob only if safe'],alt:'If GA is not free, use WA if she has won space. If C is covered on the return, GA keeps possession and uses WA/reset. If GK owns the lob lane, do not lob.',cue:'WA MOVES. GA WAITS. C PUNCHES THROUGH.',practice:'Count WA GO...GA GO. Then remove the count. Add one defender to force C to read which lead is genuinely free.'},
+ A3:{status:'CORNER STACK - DEFENDER UP CENTRE PASS',purpose:'Use the attacking WD or GD as the surprise first receiver while WA and GA stack and occupy the normal centre-pass defenders. GS then comes out to link and GA punches hard into the goal circle for the finish.',seq:['WA + GA STACK in attacking goal third','On whistle attacking GD/WD drives into centre third','PASS 1 C → GD/WD','GS times drive out of circle','GA clears then punches into goal circle','PASS 2 GD/WD → GS','GS turns and sees GA attacking space','PASS 3 GS → GA','GA lands in circle and shoots'],alt:'If the defender-up pass is denied, C uses the normal WA/GA option. If GS is denied, defender-up resets safely. If GA is covered on the punch, GS holds possession and uses the safe reset instead of forcing the feed.',cue:'STACK HOLDS. DEFENDER UP. GS OUT. GA PUNCH.',practice:'Walk through with C, WA, GA, GS and either GD or WD. Add defenders only after the timing is clean. The defender-up player must enter legally after the whistle and the first catch must be wholly in the centre third.'},
+ A4:{status:'CLIP PRINCIPLE + TEAM CONTINUATION',purpose:'Make every passer move again. Passing is not the end of your job.',seq:['PASS 1 C → WA','C clears lane','WA passes to GA','PASS 2 WA → GA','WA reoffers new angle','PASS 3 GA → C/WA safe option'],alt:'If your reoffer crowds a teammate, clear instead. Move to improve the next picture, not just to move.',cue:'PASS. CLEAR. REOFFER.',practice:'Three-player passing lane. Every pass must be followed by a clear or a new-angle reoffer.'},
+ A5:{status:'CLIP PRINCIPLE + TEAM CONTINUATION',purpose:'Create width, depth and support so one defender cannot cover several attackers.',seq:['C sees wide WA','PASS 1 C → WA','GA holds different depth','PASS 2 WA → GA','GS stays deepest','PASS 3 GA → GS if safe'],alt:'If the forward lane closes, keep the wide or behind-ball reset. Do not collapse into one line.',cue:'WIDE. DEEP. SUPPORT.',practice:'Freeze the court after each pass and check that three attackers are not standing on one line.'},
+ A6:{status:'ZONE DEFENCE - SOURCE MATCHED',purpose:'This clip is defensive. It shows the value of a connected zone that protects space instead of seven players chasing individual opponents. The ball should make the whole unit shift together.',seq:['Set connected defensive shape','Ball carrier receives','Nearest defender closes under control','Other defenders protect forward lanes','OPP PASS 1 → zone shifts together','Next defender takes ball pressure','Back line protects circle edge','OPP PASS 2 → unit slides again','Circle defenders protect front space','OPP PASS 3 → contest feed / force reset'],alt:'If one defender is pulled out of the zone, the nearest teammate protects the dangerous space while the first defender recovers. Never have two defenders chase the same ball and leave the middle open.',cue:'SEE BALL. SHIFT TOGETHER. PROTECT SPACE.',practice:'4v4 or 5v5 half-court zone. Freeze after each opposition pass. Every defender must point to the space she is protecting before play continues.'},
+ A7:{status:'CENTRE-PASS DEFENCE - SOURCE MATCHED',purpose:'This clip is defensive centre-pass strategy. Our aim is to remove the easy first pass, squeeze the WA/GA receiving space and make the opposition Centre hold, reset or throw a pressured second ball.',seq:['Before whistle defenders identify WA + GA setup','WD/GD position to influence first leads','Whistle → attackers enter centre third','Defenders move with first leads without contacting','Opp C scans for PASS 1','Nearest defender contests receiving lane','If PASS 1 lands, next defender protects PASS 2','Original defender recovers goal-side','Unit tracks the ball toward goal third','PASS 3 near circle edge is pressured by connected defenders'],alt:'If the first receiver gets free, do not keep chasing from behind. Recover goal-side immediately while the next defender pressures the ball. Protect the next pass before hunting an intercept.',cue:'TAKE FIRST SPACE. PROTECT SECOND. RECOVER GOAL-SIDE.',practice:'4v4 centre-pass defence. Attack gets three passes. Defence scores for a five-second denial drill win, forced reset, tipped pass or making Pass 3 arrive under pressure.'},
+ A8:{status:'TEAM DECISION-MAKING APPLICATION',purpose:'Create three clear answers for the ball carrier: a forward option, a second option and a safe reset. Do not crowd the same lane.',seq:['WA has ball near circle edge','GA presents forward','C stays on circle edge as RESET','GS HOLDS deep','If forward lane closes, PASS 1 WA → C','PASS 2 C → GA at new angle','PASS 3 GA → GS if safe'],alt:'If GA or GS is covered, keep the ball moving through C/WA. The safe reset is part of the attack, not a failure.',cue:'SEE THREE. CHOOSE SAFE. MOVE AGAIN.',practice:'At circle edge, freeze the ball carrier and make her point to forward, second and reset options before passing.'},
+ A9:{status:'CLIP PRINCIPLE + TEAM CONTINUATION',purpose:'Teach that going sideways or backwards can protect possession and reopen the court.',seq:['Forward lane closes','PASS 1 WA → GA','Defence compresses','PASS 2 GA → C RESET','Attack spreads again','PASS 3 C → WA into new space'],alt:'Reset early, not after you are trapped. The reset player must stay visible behind or beside the ball.',cue:'GO BACK TO GO FORWARD.',practice:'Conditioned game where one reset must be used before a goal can count.'},
+ A10:{status:'TRANSITION TEAM APPLICATION',purpose:'Turn a defensive win into controlled attack through three connected passes.',seq:['GK/GD wins ball','SECURE','PASS 1 GK → GD','C creates connection','PASS 2 GD → C','WA gets ahead','PASS 3 C → WA'],alt:'If the first outlet is denied, use the other legal safe outlet. Do not bomb over an untouched third.',cue:'WIN. SECURE. SPREAD. GO.',practice:'Start with GK turnover. Team has six seconds to create three safe connected passes.'},
+ A11:{status:'CIRCLE-ENTRY TEAM APPLICATION',purpose:'Create a triangle at the goal circle with C on the circle edge, WA wide outside, GA working front space and GS holding depth.',seq:['C starts on goal-circle edge','WA holds width','GA changes front angle','GS HOLDS deep','PASS 1 C → GA','PASS 2 GA → GS if safe','PASS 3 GS → GA/C reset if shot is not on'],alt:'If the first feed is covered, C keeps possession and uses WA or waits for GA/GS to change angle. Never throw through the defender.',cue:'C ON EDGE. WA WIDE. GA FRONT. GS DEEP.',practice:'Start C with the ball on the goal-circle edge. Freeze after every movement and check that C can see two shooters plus a reset.'},
+ A12:{status:'VERIFIED CLIP TITLE - SPLIT LANDING',purpose:'Land safely and under control. This clip is about split landing technique, not give-and-go.',seq:['C passes to WA','PASS 1 C → WA','WA SPLIT LANDS balanced','WA gets eyes up','PASS 2 WA → GA','GA controls landing','PASS 3 GA → GS if safe'],alt:'If balance is lost, secure the landing before passing. Never rush the next throw while falling or unstable.',cue:'LAND. BALANCE. EYES UP. DECIDE.',practice:'Partner feeds into split landing. Hold balance for one count, scan, then make the next safe pass.'},
+ A13:{status:'CLIP PRINCIPLE + TEAM CONTINUATION',purpose:'Make the safest useful decision under pressure instead of blindly following a pattern.',seq:['C scans defender picture','PASS 1 C → WA','Forward lane closes','PASS 2 WA → C RESET','GA moves into new lane','PASS 3 C → GA'],alt:'Pause mentally before the throw: where is the defender, where is space, what is the safest useful pass?',cue:'SEE. DECIDE. COMMIT.',practice:'Coach calls a defender change mid-drill. Players must abandon the planned option when it becomes unsafe.'},
+ D1:{status:'DEFENSIVE TEAM APPLICATION',purpose:'Pressure legally with balanced feet and body position. Good defence is not only an intercept.',seq:['Opp PASS 1 C → WA','WD closes under control','Opp PASS 2 WA → GA','GD angles body and protects circle','Opp PASS 3 GA → GS','GK contests space/rebound'],alt:'Stay at legal distance when actively defending the ball. If beaten, recover into the next useful space.',cue:'FEET FIRST. BALANCED PRESSURE.',practice:'1v1 channel defence, then add a second attacker so defender must pressure and recover.'},
+ D2:{status:'DEFENSIVE UNIT APPLICATION',purpose:'Move all seven defenders when the ball moves. One pressures, everyone else protects.',seq:['Opp PASS 1 C → WA','Nearest defender pressures','Unit shifts behind ball','Opp PASS 2 WA → GA','GD/GK protect next lane','Opp PASS 3 GA → GS','Rebounders connect'],alt:'If one defender is beaten, the next defender protects the dangerous space while the beaten player recovers.',cue:'ONE PRESSURES. EVERYONE PROTECTS.',practice:'4 attackers v 4 defenders. Freeze after each pass and ask every defender to name her job.'},
+ E1:{status:'VERIFIED D.A.B. INTERPRETATION',purpose:'Teach three useful option types: Downcourt, Adjacent and Backwards.',seq:['C has ball','PASS 1 downcourt → WA','Adjacent option appears','PASS 2 WA → GA','Forward closes','PASS 3 GA → C backwards/reset'],alt:'Backwards is not failure. Use it when it improves possession and moves the defence.',cue:'DOWNCOURT. ADJACENT. BACKWARDS.',practice:'Possession game where the ball carrier must identify D, A and B before choosing.'},
+ E2:{status:'VERIFIED LOADED-STACK PRINCIPLE + TEAM FINISH',purpose:'First movement shifts a defender. Second movement attacks the space that movement creates.',seq:['Players load one side','WA clears/moves defender','GA peels into space','PASS 1 C → GA','C drives to circle edge','PASS 2 GA → C','GS HOLDS','PASS 3 LOB if safe'],alt:'If the defender stays and WA becomes free, use WA. If lob lane is unsafe, reset through GA/WA.',cue:'FIRST SHIFTS. SECOND ATTACKS. C PUNCHES THROUGH.',practice:'Loaded stack without defence, then guided defender, then live. Reward correct reads over memorised passes.'}
+};
+function renderDeepDive(){
+ const mount=document.getElementById('deepDivePack'); if(!mount) return;
+ mount.innerHTML=Object.entries(deepDive).map(([code,d])=>{
+  const c=clipData[code];
+  const flow=d.seq.map((x,i)=>`<span class="node ${x.includes('reads')||x.includes('if safe')?'decision':''}">${x}</span>${i<d.seq.length-1?'<span class="arrow">→</span>':''}`).join('');
+  return `<article class="deep-card"><div class="deep-head"><div><span class="deep-code">${code}</span> <strong>${c.lens}</strong></div><span class="deep-status">${d.status}</span></div>
+   <div class="kid-cue">REMEMBER: ${d.cue}</div>
+   <div class="deep-grid"><div class="deep-box"><h4>What this teaches</h4><p>${d.purpose}</p><h4>What to watch</h4><p>${c.lookFor.join(' • ')}</p></div><div class="deep-box"><h4>If the plan is covered</h4><p>${d.alt}</p><h4>Thursday practice</h4><p>${d.practice}</p></div></div>
+   <h4 style="margin:14px 0 4px;color:#E9B949">3-pass decision flow</h4><div class="flow">${flow}</div>
+   <p class="source-note"><strong>Source integrity:</strong> Watch the linked clip for the skill/principle. The three-pass flow is our team application unless the status explicitly says the sequence is verified from the source. <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=${c.id}">Watch ${code}</a></p></article>`
+ }).join('');
+}
+
+const rules = [
+  {t:"Create space.", d:"Do not follow a teammate into the same area."},
+  {t:"Drive with purpose.", d:"A real lead makes the defender choose."},
+  {t:"Pass and move.", d:"After passing, clear or reoffer."},
+  {t:"Give the ball three choices.", d:"Forward option, another option, safe reset."},
+  {t:"Defend together.", d:"Closest player pressures. Everyone else protects the next pass."},
+];
+const calls = [
+  ["ONE","WA is our first centre-pass lead. GA creates the next option."],
+  ["TWO","GA is our first centre-pass lead. WA creates the next option."],
+  ["CLEAR","Get out of that space so your teammate can use it."],
+  ["RESET","The forward pass isn't safe. Use the player behind/sideways and rebuild."],
+  ["PRESS","We just lost the ball. Nearest player pressures; everyone else finds a job."],
+];
+
+const positions = {
+  GS:[
+    {cue:"Give us depth.", detail:"Stay dangerous near goal. Don't chase every ball into the goal third — your movement can create room for GA as much as it creates a pass to you."},
+    {cue:"Make the defender choose.", detail:"Hold a strong position, then time a sharp move. Drift in too early and GK/GD are already set and waiting for you."},
+    {cue:"Protect the space, then attack the ball.", detail:"Get your body between the ball and your defender before you look for the pass — not after you've already lost the contest."},
+    {cue:"One shooter holds, one shooter moves.", detail:"If GA is working the top of the circle, you anchor the post. Don't both chase the same feed at the same time."},
+    {cue:"Composure over panic.", detail:"A missed shot isn't the end of the phase. Reset your feet, find the space, and ask for the next ball calmly."},
+    {cue:"Call it early.", detail:"Tell GA and WA where you are before the ball arrives, not after you've already missed the window to receive it."},
+    {cue:"Watch the double-team.", detail:"If GK and GD both come to you, that means someone else on our team is free — point it out to your teammates."},
+    {cue:"Land safe, then move.", detail:"Controlled two-footed landing after every shot or catch, every time, before your next drive."},
+    {cue:"Work off GA's drive.", detail:"When GA draws her defender wide, that's your cue to cut into the space she's just created — not stand and wait."},
+    {cue:"Own the rebound contest.", detail:"Stay alert around the post after every shot — yours or GA's — in case the ball comes back off the ring."},
+  ],
+  GA:[
+    {cue:"Connect and come again.", detail:"Create a strong first or second lead, help move the ball through the goal third, and after clearing, reoffer."},
+    {cue:"Read GS before you move.", detail:"If GS is holding deep, your job is often the top of the circle — don't crowd the space she's using."},
+    {cue:"Change the angle.", detail:"If your straight lead is covered, drive on a different line next time rather than repeating the exact same run."},
+    {cue:"Timing over speed.", detail:"Wait for WA or C's first option to be used before you commit your own lead — that's what makes you the second option, not a rushed one."},
+    {cue:"Talk to your shooter.", detail:"Call GS in, or tell her to hold, depending on what you can see developing in front of you."},
+    {cue:"Be our fastest attacker after a turnover.", detail:"When we win the ball back near the circle, you're often our quickest option forward — get moving immediately."},
+    {cue:"Don't chase a bad pass.", detail:"If the ball isn't coming to you cleanly, protect against the turnover instead of lunging for it."},
+    {cue:"Create the second option, every time.", detail:"After WA's lead, your reoffer is what keeps our attack moving instead of stalling."},
+    {cue:"Feed with a purpose.", detail:"When you get the ball in the circle, know before you catch it whether GS or you is taking the shot."},
+    {cue:"Reset when both shooters are covered.", detail:"Don't force the ball into two defenders. Pass back and rebuild the attack instead."},
+  ],
+  WA:[
+    {cue:"Give us width and an edge.", detail:"Be a strong centre-pass option, stretch the defence sideways, and work to good feeding positions around the circle edge."},
+    {cue:"Your first drive sets the tone.", detail:"On CENTRE PASS ONE, your lead has to be sharp and early enough that you're actually there when C looks for you."},
+    {cue:"Know when to hold.", detail:"On CENTRE PASS TWO, your patience creates GA's space. A rushed run at the same time ruins the timing for both of you."},
+    {cue:"Feed around the circle edge.", detail:"Get the ball into a position GA or GS can actually use — not just anywhere near the circle."},
+    {cue:"Reoffer after every pass.", detail:"The moment the ball leaves your hands, find your next job. Standing still removes an option."},
+    {cue:"Stretch, don't crowd.", detail:"If GA is already working wide, look for depth or a different channel instead of standing next to her."},
+    {cue:"Defend the moment we turn it over.", detail:"You're often first to press their WD or drop back into space — know your job in transition before it happens."},
+    {cue:"Communicate with C.", detail:"Tell her early which side you want the ball, and adjust fast if she calls something different."},
+    {cue:"Change of pace beats change of direction.", detail:"A sudden burst after a slow start unbalances your defender more than a sharp cut on its own."},
+    {cue:"Be the release valve.", detail:"If our attack stalls, you're often the safe option for the reset ball — stay available, not hidden."},
+  ],
+  C:[
+    {cue:"See the whole picture.", detail:"Don't decide where the pass is going before the whistle. See first option, second option and reset. Control whether we go fast or settle."},
+    {cue:"Read the space, not just the player.", detail:"Look for where the defence has left a gap, not just who's calling loudest for the ball."},
+    {cue:"Own the restart.", detail:"Every centre pass starts with you — know whether it's ONE or TWO before you even catch the ball from the umpire."},
+    {cue:"Slow the game down when we need to.", detail:"If everyone's rushing, you're the player who can reset the tempo with one controlled pass."},
+    {cue:"Link both ends.", detail:"You connect defence winning the ball to attack using it — always look up after every catch."},
+    {cue:"Don't force the first option.", detail:"If WA or GA is covered, trust the reset rather than throwing the ball into two defenders."},
+    {cue:"Talk your defenders through transition.", detail:"When we turn it over, help organise who presses the ball and who protects the next pass."},
+    {cue:"Clear after every pass.", detail:"Standing still after you've passed removes an option for the very next phase of the attack."},
+    {cue:"Watch for two markers.", detail:"If the opposition doubles up on one of your options, someone else on court is free — find them."},
+    {cue:"Composure is contagious.", detail:"When you stay calm under scoreboard pressure, the rest of the team follows your lead."},
+  ],
+  WD:[
+    {cue:"Make their WA work.", detail:"Pressure their easiest attacking connection so every single pass costs them effort."},
+    {cue:"Body position before ball-watching.", detail:"Get goal-side and stay connected to your attacker before you start looking for the ball yourself."},
+    {cue:"Deny, don't chase.", detail:"Your first job is closing space, not gambling for the intercept and leaving your attacker free."},
+    {cue:"Turn defence into attack instantly.", detail:"The moment we win it, you're often our first outlet — be ready to move forward immediately."},
+    {cue:"Communicate with C and GD.", detail:"Call switches and pick-ups so nobody's attacker is left completely free."},
+    {cue:"Controlled feet, not desperate lunges.", detail:"A stable base beats a diving intercept attempt that misses and leaves a gap."},
+    {cue:"Know your job on PRESS.", detail:"Nearest player pressures the ball. If that's not you, protect the next pass — don't just watch."},
+    {cue:"Read the reset.", detail:"If their attack is forced backwards, that's your cue to push up and close the space again."},
+    {cue:"Protect, don't gamble, in the last few minutes.", detail:"Under scoreboard pressure, safe positioning matters more than a risky intercept attempt."},
+    {cue:"Recover fast after every phase.", detail:"If you're beaten on one lead, get back into position before ball-watching the next one."},
+  ],
+  GD:[
+    {cue:"Pressure, read, then go.", detail:"Work with GK, make circle entry difficult, read possible passes and become part of our attack as soon as possession changes."},
+    {cue:"Make circle entry earn its way in.", detail:"Deny the easy ball to the top of the circle before worrying about the shooter underneath."},
+    {cue:"Talk to your GK constantly.", detail:"Decide together who takes the front of the circle and who protects the back."},
+    {cue:"Don't ball-watch the shot.", detail:"Stay switched on for the rebound and the next contest, even after the shooter releases the ball."},
+    {cue:"First safe pass, every turnover.", detail:"When you win it, your first job is a safe outlet pass, not a hero ball down the court."},
+    {cue:"Match their shooter's pace.", detail:"If GA changes speed to lose you, recover your position rather than chasing the sprint."},
+    {cue:"Protect the top of the circle.", detail:"That space is often more dangerous than the area right under the post."},
+    {cue:"Read GS/GA combinations.", detail:"If they're both working the same side, that tells you where the next ball is likely going."},
+    {cue:"Composure over lunging.", detail:"A controlled deflection is worth more than a missed interception attempt."},
+    {cue:"Be first into attack shape.", detail:"The instant we turn it over, your movement helps set up our own centre-pass shape."},
+  ],
+  GK:[
+    {cue:"Protect, talk, start.", detail:"Protect dangerous space, communicate continuously and, when we win possession, make the first safe pass that starts our attack."},
+    {cue:"Own the back of the circle.", detail:"You're the last line. Controlled positioning matters more than chasing every single ball."},
+    {cue:"Talk your GD through circle entry.", detail:"Decide together who denies the top of the circle and who protects underneath."},
+    {cue:"Composure on the shot.", detail:"Watch the shooter's hips, not just the ball, to read where she's actually going."},
+    {cue:"First pass starts everything.", detail:"When you win the ball, a calm, accurate outlet pass matters more than a big, risky one down the court."},
+    {cue:"Reset your position after every shot.", detail:"Don't get caught flat-footed after a miss — find your spot again immediately."},
+    {cue:"Deny the rebound space.", detail:"Box out under the post the same way you'd defend a lead anywhere else on court."},
+    {cue:"Read combinations, not just the ball.", detail:"If GS holds deep and GA works the top, that tells you where the next circle entry is coming from."},
+    {cue:"Protect, don't gamble, when it's close.", detail:"In tight finals moments, safe positioning beats a risky intercept attempt."},
+    {cue:"Set the tone from the back.", detail:"Your calm communication under pressure settles the whole defensive line in front of you."},
+  ],
+};
+
+const training1 = [
+  ["0:00-0:05","Game-plan movement warm-up","Use the same leads, clears, reoffers, catches and passes used in our game plans. No separate fitness work.","A4"],
+  ["0:05-0:15","A1 + A2 centre-pass plans","Set legal starting positions on the line. Walk each pattern, then run it. First lead, timing, C continuation and safe next option.","A2"],
+  ["0:15-0:25","A3 Corner Stack - Defender Up","STACK HOLDS -> DEFENDER UP -> GS OUT -> GA PUNCH. Practise C to GD/WD, GD/WD to GS, then GS to GA in the circle.","A3"],
+  ["0:25-0:35","A8 - three-option decision plan","Build a forward option, second option and safe reset. Ball carrier reads the defence rather than forcing the first pass.","A8"],
+  ["0:35-0:45","A11 - circle-entry plan","C works at the goal-circle edge, WA keeps width, GA moves into a separate lane and GS holds useful depth. Feed the safest available target.","A11"],
+  ["0:45-0:52","A10 - turnover transition","Start with a defensive win. SECURE -> EYES UP -> SPREAD -> GO. Complete the three-pass transition while every player changes role.","A10"],
+  ["0:52-1:00","Controlled game-plan match play","Coach calls the plan name only. Players set themselves, execute it, and reset if the defence removes the preferred option.","A13"]
+];
+const training2 = [
+  ["0:00-0:05","Game-plan movement warm-up","Sharp passing, leads, clears and reoffers using movements already in the Game Plan tab.","A4"],
+  ["0:05-0:12","A1 + A2 under live pressure","Set quickly, start legally and execute against defenders. Read the first option rather than forcing it.","A2"],
+  ["0:12-0:20","A3 Corner Stack - live defence","STACK HOLDS -> DEFENDER UP -> GS OUT -> GA PUNCH. Defenders now try to remove each phase, so use the safe alternative when needed.","A3"],
+  ["0:20-0:28","A8 - read, choose, reset","Live defenders remove the first option. Players must identify forward, alternative or reset without coach direction.","A8"],
+  ["0:28-0:36","A11 - circle entry under pressure","C works the circle edge. WA, GA and GS keep separate spaces. Feed according to defender position, not a memorised throw.","A11"],
+  ["0:36-0:44","A6 + D1 + D2 defensive game plans","Pressure the ball legally, protect the next pass and shift together. Rebuild shape immediately when the opposition moves the ball.","D2"],
+  ["0:44-0:52","A10 - turnover into attack","Win possession and immediately execute our transition. Defenders become attackers and the whole team spreads into the next three passes.","A10"],
+  ["0:52-1:00","Finals game-plan scenarios","Scores level, protecting a lead, chasing a goal, our centre pass, opposition centre pass and turnover ball. Call the plan, read the defence and execute.","A13"]
+];
+
+const quizzes = {
+  1:[
+    {q:"If WA drives into the middle, should GA immediately run into the same middle space?",
+     opts:["Yes, support her fast","No — create another option or clear","Only if GA is faster"],
+     correct:1, note:"Correct. Following WA into the same space removes an option instead of creating one."},
+    {q:"What should C do if her first option is clearly covered?",
+     opts:["Force the pass anyway","See the second option or reset","Kick the ball long"],
+     correct:1, note:"Correct. Covered doesn't mean panic — it means look again."},
+    {q:"After I pass, what are my two choices?",
+     opts:["Stand and admire it","Clear or reoffer","Call for it straight back"],
+     correct:1, note:"Correct. Your job isn't finished when the ball leaves your hands."},
+    {q:"On Centre Pass TWO, what happens if WA and GA both move at the same instant?",
+     opts:["Nothing, it's fine","The system has failed before the pass is even made","C should pass to whoever is closest"],
+     correct:1, note:"Correct. Second doesn't mean slow — it means timed."},
+    {q:"What is our target number of visible passing options for the ball carrier?",
+     opts:["One","Two","Three — forward, alternative, reset"],
+     correct:2, note:"Correct. Forward option, another option, safe reset."},
+  ],
+  2:[
+    {q:"What is the first lesson in defence — before intercepts?",
+     opts:["Get the intercept","Make the next pass difficult","Chase the ball everywhere"],
+     correct:1, note:"Correct. Pressure creates the intercept — we don't have to gamble to create pressure."},
+    {q:"After winning the ball, what's the right order?",
+     opts:["Bomb it forward immediately","Win it → Secure it → Eyes up → Spread → Go forward if safe","Pass to whoever is loudest"],
+     correct:1, note:"Correct. Win it twice — first by taking the ball, then by keeping it."},
+    {q:"A reset pass backwards during a finals match is...",
+     opts:["A failure","A smart choice that can help us go forward for the next three passes","Against the rules"],
+     correct:1, note:"Correct. Backwards for one pass can help us go forward for the next three."},
+    {q:"Whose job is defensive pressure on our PRESS call?",
+     opts:["Only GK","Just the closest player, alone forever","Nearest player pressures, everyone else finds a job"],
+     correct:2, note:"Correct. We defend together."},
+  ]
+};
+
+// ---------- STORAGE (per-device, no names collected) ----------
+const state = { checklist:{}, position:null, quizBest:{1:null,2:null} };
+
+async function loadState(){
+  try{
+    const r = await window.storage.get('finals-ready-progress');
+    if(r && r.value){ Object.assign(state, JSON.parse(r.value)); }
+  }catch(e){ /* no saved state yet */ }
+}
+async function saveState(){
+  try{ await window.storage.set('finals-ready-progress', JSON.stringify(state)); }
+  catch(e){ console.error('save failed', e); }
+}
+
+// ---------- TAB NAV ----------
+document.getElementById('tabs').addEventListener('click', e=>{
+  const btn = e.target.closest('button[data-tab]');
+  if(!btn) return;
+  document.querySelectorAll('#tabs button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('section.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+});
+
+// ---------- THIS WEEK ----------
+function clipCardHTML(code){
+  const c = clipData[code];
+  if(!c) return '';
+  return `
+    <div class="clip-card" data-clip="${code}">
+      <div class="clip-title">${code} — ${c.lens}</div>
+      <button class="clip-thumb" data-open-video="${code}" aria-label="Watch ${code} full screen">
+        <img src="https://img.youtube.com/vi/${c.id}/hqdefault.jpg" alt="${code} thumbnail" loading="lazy">
+        <div class="play-overlay"><div class="play-btn">▶</div></div>
+        <div class="watch-label">Watch full screen</div>
+      </button>
+      <div class="clip-section-label">Look for</div>
+      <ul>${c.lookFor.map(l=>`<li>${l}</li>`).join('')}</ul>
+      <div class="clip-section-label">Why it matters</div>
+      <p>${c.why}</p>
+      <div class="clip-section-label">How we use it in our game</div>
+      <p>${c.use}</p>
+      <div class="clip-check">
+        <div class="cq">${c.check.q}</div>
+        <div class="clip-mc-opts" data-mc="${code}">
+          ${c.check.opts.map((o,i)=>`<button class="clip-mc-opt" data-code="${code}" data-i="${i}">${o}</button>`).join('')}
+        </div>
+        <div class="clip-mc-note" id="note-${code}">${c.check.note}</div>
+      </div>
+    </div>`;
+}
+
+function weekQuizData(code){
+  const c=clipData[code];
+  if(!c) return [];
+  const base=c.check;
+  const q1={q:base.q,opts:base.opts,correct:base.correct,note:base.note};
+  const q2={q:`What should you watch most closely in ${code}?`,opts:[c.lookFor[0]||c.lens,'Only where the ball finishes','Only the player who scores'],correct:0,note:`Watch the movement before the catch: ${c.lookFor[0]||c.lens}.`};
+  const q3={q:'If our first planned option is clearly covered, what should we do?',opts:['Force the planned pass anyway','Read the next safe option or RESET','Stop moving and wait'],correct:1,note:'Our game plans give us shape, but we still read the defence. Never force a covered pass.'};
+  return [q1,q2,q3];
+}
+function weekQuizHTML(code){
+  const qs=weekQuizData(code);
+  return `<div class="week-inline-quiz" data-week-quiz="${code}">
+    <div class="wiq-title">3-QUESTION CLIP QUIZ</div>
+    ${qs.map((q,qi)=>`<div class="week-inline-q" data-q="${qi}">
+      <div class="wiq-q">${qi+1}. ${q.q}</div>
+      <div class="week-inline-opts">${q.opts.map((o,oi)=>`<button class="week-inline-opt" data-week-quiz-answer="${code}" data-q="${qi}" data-i="${oi}">${o}</button>`).join('')}</div>
+      <div class="week-inline-feedback" id="week-feedback-${code}-${qi}"></div>
+    </div>`).join('')}
+    <div class="week-inline-progress" id="week-progress-${code}">0/3 answered correctly</div>
+  </div>`;
+}
+
+function thisWeekClipHTML(code){
+  const c = clipData[code];
+  if(!c) return '';
+  return `
+    <article class="this-week-clip-card" data-week-clip="${code}">
+      <button class="this-week-thumb" data-open-video="${code}" aria-label="Watch ${code} - ${c.lens}">
+        <img src="https://img.youtube.com/vi/${c.id}/hqdefault.jpg" alt="${code} - ${c.lens} thumbnail" loading="lazy">
+        <span class="this-week-watch">▶ WATCH NOW</span>
+      </button>
+      <div class="this-week-clip-body">
+        <div class="this-week-code">${code}</div>
+        <h4>${c.lens}</h4>
+        <p><strong>Watch for:</strong> ${c.lookFor[0] || c.lens}.</p>
+        <p class="this-week-use"><strong>Our focus:</strong> ${c.use}</p>
+        ${weekQuizHTML(code)}
+        <div class="this-week-actions">
+          <button class="week-watch-btn" data-open-video="${code}">▶ WATCH CLIP</button>
+          <button class="week-plan-btn" data-open-plan="${code}">OPEN GAME PLAN</button>
+        </div>
+      </div>
+    </article>`;
+}
+
+function renderDays(list, mountId){
+  const mount = document.getElementById(mountId);
+  mount.innerHTML = '';
+  list.forEach((d,i)=>{
+    const key = mountId+'-'+i;
+    const row = document.createElement('div');
+    row.className = 'day-row' + (d.today ? ' today' : '');
+    const hasClips = d.clips && d.clips.length>0;
+    row.innerHTML = `
+      <div class="day-check ${state.checklist[key]?'done':''}" data-key="${key}">✓</div>
+      <div class="day-name">${d.day}</div>
+      <div class="day-content">
+        <div class="what">${d.what}</div>
+        <div class="learn">${d.learn}</div>
+        ${hasClips ? `<div class="this-week-clip-grid" id="clips-${key}">${d.clips.map(code=>thisWeekClipHTML(code)).join('')}</div>` : ''}
+      </div>
+    `;
+    mount.appendChild(row);
+  });
+  mount.querySelectorAll('.day-check').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const k = el.dataset.key;
+      state.checklist[k] = !state.checklist[k];
+      el.classList.toggle('done');
+      saveState();
+    });
+  });
+}
+document.querySelectorAll('.week-toggle button[data-week]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.week-toggle button[data-week]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('weekOneCard').style.display = btn.dataset.week==='1' ? 'block':'none';
+    document.getElementById('weekTwoCard').style.display = btn.dataset.week==='2' ? 'block':'none';
+  });
+});
+
+document.addEventListener('click', (e)=>{
+  const b=e.target.closest('[data-open-plan]');
+  if(!b) return;
+  const code=b.dataset.openPlan;
+  const tab=document.querySelector('#tabs button[data-tab="plan"]');
+  if(tab) tab.click();
+  setTimeout(()=>{
+    const target=document.querySelector(`[data-deep-code="${code}"]`) || document.querySelector(`[data-diagram-code="${code}"]`) || document.querySelector(`[data-clip-code="${code}"]`);
+    if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+  },80);
+});
+
+const weekQuizPassed = {};
+document.addEventListener('click',(e)=>{
+  const btn=e.target.closest('[data-week-quiz-answer]');
+  if(!btn) return;
+  const code=btn.dataset.weekQuizAnswer, qi=Number(btn.dataset.q), oi=Number(btn.dataset.i);
+  const qs=weekQuizData(code), q=qs[qi];
+  const wrap=btn.closest('.week-inline-q');
+  wrap.querySelectorAll('.week-inline-opt').forEach(b=>{ b.classList.remove('correct','wrong'); });
+  const fb=document.getElementById(`week-feedback-${code}-${qi}`);
+  if(oi===q.correct){
+    btn.classList.add('correct');
+    fb.textContent='Correct. '+q.note;
+    weekQuizPassed[code]=weekQuizPassed[code]||{};
+    weekQuizPassed[code][qi]=true;
+  }else{
+    btn.classList.add('wrong');
+    fb.textContent='Try again. '+q.note;
+  }
+  fb.classList.add('show');
+  const n=Object.values(weekQuizPassed[code]||{}).filter(Boolean).length;
+  const prog=document.getElementById(`week-progress-${code}`);
+  if(prog) prog.textContent=n===3?'3/3 correct - clip complete':'${N}'.replace('${N}',n)+'/3 answered correctly';
+});
+
+// ---------- GAME PLAN: rules & calls ----------
+function renderRules(){
+  const grid = document.getElementById('rulesGrid');
+  grid.innerHTML = rules.map((r,i)=>`
+    <div class="rule-item">
+      <div class="rule-num">${i+1}</div>
+      <div><div class="title">${r.t}</div><div class="desc">${r.d}</div></div>
+    </div>`).join('');
+}
+function renderCalls(){
+  const t = document.getElementById('callsTable');
+  t.innerHTML = calls.map(c=>`<tr><td>${c[0]}</td><td>${c[1]}</td></tr>`).join('');
+}
+
+// ---------- ANIMATED CENTRE PASS DIAGRAMS ----------
+// Court thirds background + player circles; phases move WA/GA/ball.
+function courtBackground(){
+  return `
+    <rect x="0" y="0" width="300" height="220" fill="none"/>
+    <line x1="0" y1="73" x2="300" y2="73" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" stroke-dasharray="4 4"/>
+    <line x1="0" y1="146" x2="300" y2="146" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" stroke-dasharray="4 4"/>
+    <text x="150" y="16" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-size="9" font-family="monospace">GOAL THIRD</text>
+  `;
+}
+function playerSVG(x,y,label,hasBall,fill){
+  const ballDot = hasBall ? `<circle cx="${x}" cy="${y}" r="15" fill="none" stroke="#E7A93B" stroke-width="2"/>` : '';
+  return `<g>
+    ${ballDot}
+    <circle cx="${x}" cy="${y}" r="12" fill="${fill||'#F3EEE2'}" stroke="#0B1B27" stroke-width="1.5"/>
+    <text x="${x}" y="${y+4}" text-anchor="middle" font-size="10" font-weight="700" fill="#0B1B27" font-family="sans-serif">${label}</text>
+  </g>`;
+}
+function defenderSVG(x,y){
+  return `<g><circle cx="${x}" cy="${y}" r="9" fill="none" stroke="#7C8798" stroke-width="2" stroke-dasharray="3 2"/>
+  <text x="${x}" y="${y+3}" text-anchor="middle" font-size="8" fill="#7C8798" font-family="monospace">D</text></g>`;
+}
+function arrow(x1,y1,x2,y2,dashed){
+  return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#F3EEE2" stroke-width="1.5"
+    ${dashed?'stroke-dasharray="3 3"':''} marker-end="url(#arrowhead)"/>`;
+}
+const arrowDefs = `<defs><marker id="arrowhead" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+  <path d="M0,0 L6,3 L0,6 Z" fill="#F3EEE2"/></marker></defs>`;
+
+// Phase definitions per play. positions: {GS,GA,WA,C}
+const playOne = [
+  { caption:"Setup - WA and GA start legally in the attacking goal third, outside the centre third before the whistle.",
+    pos:{GS:[150,35],GA:[95,105],WA:[205,105],C:[150,146]}, ball:'C', arrows:[] },
+  { caption:"1. WA drives hard into the space. GA holds — does not follow.",
+    pos:{GS:[150,35],GA:[95,105],WA:[175,80],C:[150,146]}, ball:'C',
+    arrows:[[150,146,175,90,false]] },
+  { caption:"C reads WA is free and passes. WA now has the ball.",
+    pos:{GS:[150,35],GA:[95,105],WA:[175,80],C:[150,146]}, ball:'WA',
+    arrows:[[150,146,175,90,false]] },
+  { caption:"2. GA times her reoffer now that WA's lead has created room.",
+    pos:{GS:[150,35],GA:[120,70],WA:[175,80],C:[150,146]}, ball:'WA',
+    arrows:[[95,105,120,75,true]] },
+];
+const playTwo = [
+  { caption:"Setup - GA and WA start legally in the attacking goal third, outside the centre third before the whistle.",
+    pos:{GS:[150,35],GA:[95,105],WA:[205,105],C:[150,146]}, ball:'C', arrows:[] },
+  { caption:"1. GA drives first this time. WA deliberately holds her position.",
+    pos:{GS:[150,35],GA:[125,80],WA:[205,105],C:[150,146]}, ball:'C',
+    arrows:[[150,146,125,90,false]] },
+  { caption:"C reads GA is free and passes. GA now has the ball.",
+    pos:{GS:[150,35],GA:[125,80],WA:[205,105],C:[150,146]}, ball:'GA',
+    arrows:[[150,146,125,90,false]] },
+  { caption:"2. WA's wait was timed, not slow — she reoffers into the space GA's drive created.",
+    pos:{GS:[150,35],GA:[125,80],WA:[180,75],C:[150,146]}, ball:'GA',
+    arrows:[[205,105,180,80,true]] },
+];
+
+function makeDiagram(svgId, controlsId, captionId, phases){
+  const svg = document.getElementById(svgId);
+  const controls = document.getElementById(controlsId);
+  const caption = document.getElementById(captionId);
+  const checkbox = controls.querySelector('[data-defenders]');
+  let idx = 0;
+  let playing = null;
+
+  function render(){
+    const ph = phases[idx];
+    let inner = arrowDefs + courtBackground();
+    ph.arrows.forEach(a=> inner += arrow(a[0],a[1],a[2],a[3],a[4]));
+    Object.entries(ph.pos).forEach(([label,[x,y]])=>{
+      inner += playerSVG(x,y,label,ph.ball===label,'#F3EEE2');
+    });
+    if(checkbox.checked){
+      inner += defenderSVG(ph.pos.WA[0]+18, ph.pos.WA[1]-14);
+      inner += defenderSVG(ph.pos.GA[0]-18, ph.pos.GA[1]-14);
+    }
+    svg.innerHTML = inner;
+    caption.textContent = ph.caption;
+  }
+
+  controls.addEventListener('click', e=>{
+    const btn = e.target.closest('button[data-act]');
+    if(!btn) return;
+    if(btn.dataset.act==='next'){ idx = Math.min(idx+1, phases.length-1); render(); }
+    if(btn.dataset.act==='back'){ idx = Math.max(idx-1, 0); render(); }
+    if(btn.dataset.act==='play'){
+      if(playing){ clearInterval(playing); playing=null; btn.textContent='▶ Play'; return; }
+      idx = 0; render();
+      btn.textContent = '⏸ Pause';
+      playing = setInterval(()=>{
+        idx++;
+        if(idx >= phases.length){ clearInterval(playing); playing=null; btn.textContent='▶ Play'; idx=phases.length-1; return; }
+        render();
+      }, 1400);
+    }
+  });
+  checkbox.addEventListener('change', render);
+  render();
+}
+
+
+// ---------- IN-DEPTH NETBALL DIAGRAM REBUILD ----------
+// Court orientation is fixed: our attacking goal is TOP, defensive goal is BOTTOM.
+// Coordinates are constrained to legal positional areas. Centre-pass receivers begin
+// outside the centre third and enter only after the whistle.
+const trainingClipDiagrams = [
+ {code:'A1',title:'Creating the first lead',note:'Centre pass. One player attacks first; the second preserves space.',phases:[
+  {c:'BEFORE WHISTLE - C is in the centre circle. WA and GA are legally outside the centre third. GS holds attacking depth.',b:'C',p:{C:[150,300],WA:[80,190],GA:[220,190],GS:[150,70]},a:[]},
+  {c:'1. WHISTLE - WA crosses the transverse line on a strong diagonal lead. GA holds.',b:'C',p:{C:[150,300],WA:[112,235],GA:[220,190],GS:[150,70]},a:[['WA',[80,190],[112,235],'fast']]},
+  {c:'2. C passes to the free first lead.',b:'WA',p:{C:[150,300],WA:[112,235],GA:[220,190],GS:[150,70]},a:[['ball',[150,300],[112,235],'pass']]},
+  {c:'3. GA now attacks the next forward space. The first lead created the timing window.',b:'WA',p:{C:[150,315],WA:[112,235],GA:[178,165],GS:[150,70]},a:[['GA',[220,190],[178,165],'reoffer']]}
+ ]},
+ {code:'A2',title:'Centre-pass timing',note:'The second movement is delayed on purpose. Timing protects space.',phases:[
+  {c:'BEFORE WHISTLE - legal centre-pass setup. GA and WA remain in the attacking goal third.',b:'C',p:{C:[150,300],WA:[72,198],GA:[228,198],GS:[150,72]},a:[]},
+  {c:'1. WHISTLE - WA goes first. GA waits and watches the defender react.',b:'C',p:{C:[150,300],WA:[108,242],GA:[228,198],GS:[150,72]},d:{DWA:[120,230],DGA:[212,182]},a:[['WA',[72,198],[108,242],'fast']]},
+  {c:'2. The first movement shifts the defence. GA now crosses into the opposite centre-third channel.',b:'C',p:{C:[150,300],WA:[108,242],GA:[192,235],GS:[150,72]},d:{DWA:[120,230],DGA:[210,215]},a:[['GA',[228,198],[192,235],'fast']]},
+  {c:'3. C reads which lead is free and delivers. The lesson is timing, not a compulsory receiver.',b:'GA',p:{C:[150,300],WA:[108,242],GA:[192,235],GS:[150,72]},d:{DWA:[120,230],DGA:[210,215]},a:[['ball',[150,300],[192,235],'pass']]}
+ ]},
+ {code:'A3',title:'Corner Stack - Defender Up',note:'STACK HOLDS. DEFENDER UP. GS OUT. GA PUNCH. WA and GA hold the attacking stack. WD or GD is the surprise first receiver. GS comes out to link. GA punches into the goal circle for the finish.',phases:[
+  {c:'SETUP - C is in the centre circle. WA and GA are stacked ON the attacking transverse line, goal-third side. GS starts inside the attacking goal circle. GD is ON the defensive transverse line, defensive-third side, ready to drive after the whistle.',b:'C',p:{C:[150,300],WA:[88,198],GA:[102,198],GS:[150,55],GD:[210,402]},a:[]},
+  {c:'1. WHISTLE - STACK HOLDS. WA and GA stay together and occupy the normal centre-pass defenders. GD drives forward off the defensive transverse line into the centre third as the surprise first receiver.',b:'C',p:{C:[150,300],WA:[88,198],GA:[102,198],GS:[150,55],GD:[205,345]},a:[['GD',[210,402],[205,345],'fast']]},
+  {c:'2. PASS 1 - C → GD. C only releases once GD is wholly inside the centre third. WA and GA keep holding long enough to keep their defenders away from the new passing lane.',b:'GD',p:{C:[150,300],WA:[88,198],GA:[102,198],GS:[150,55],GD:[205,345]},a:[['ball',[150,300],[205,345],'pass']]},
+  {c:'3. GS OUT - As GD controls Pass 1, GS drives OUT of the goal circle to become the forward link. GA now releases from the stack and prepares to punch into the circle. WA clears wide and stays available.',b:'GD',p:{C:[150,285],WA:[58,165],GA:[105,170],GS:[180,125],GD:[205,345]},a:[['GS',[150,55],[180,125],'fast'],['GA',[102,198],[105,170],'move'],['WA',[88,198],[58,165],'move']]},
+  {c:'4. PASS 2 - GD → GS outside the goal circle. As the ball travels, GA changes pace and PUNCHES hard into the goal circle. GS must catch outside the circle and turn quickly.',b:'GS',p:{C:[150,275],WA:[58,165],GA:[135,72],GS:[180,125],GD:[205,345]},a:[['ball',[205,345],[180,125],'pass'],['GA',[105,170],[135,72],'fast']]},
+  {c:'5. PASS 3 - GS → GA into the goal circle. GA lands balanced in shooting range. If GA owns the space, she turns to post and shoots.',b:'GA',p:{C:[150,275],WA:[58,165],GA:[135,72],GS:[180,125],GD:[205,345]},a:[['ball',[180,125],[135,72],'pass']]},
+  {c:'6. FINISH - GA SHOOTS. GS follows the shot for rebound position. WA, C and GD balance behind the ball for any reset or turnover.',b:'GA',p:{C:[150,275],WA:[58,165],GA:[135,72],GS:[165,88],GD:[205,345]},a:[['GS',[180,125],[165,88],'move']]}
+ ]},
+ {code:'A4',title:'Pass - clear - reoffer',note:'Passing never ends your involvement. Clear the lane, then present a new angle.',phases:[
+  {c:'Setup - WA has possession in the attacking goal third. GA is a forward option; C supports behind.',b:'WA',p:{WA:[85,165],GA:[205,135],C:[145,235],GS:[150,60]},a:[]},
+  {c:'1. WA passes forward to GA.',b:'GA',p:{WA:[85,165],GA:[205,135],C:[145,235],GS:[150,60]},a:[['ball',[85,165],[205,135],'pass']]},
+  {c:'2. WA immediately clears away from the old passing lane.',b:'GA',p:{WA:[55,125],GA:[205,135],C:[145,235],GS:[150,60]},a:[['WA',[85,165],[55,125],'move']]},
+  {c:'3. WA changes angle and reoffers outside the circle. GA now has a fresh option.',b:'GA',p:{WA:[92,105],GA:[205,135],C:[145,235],GS:[150,60]},a:[['WA',[55,125],[92,105],'reoffer']]}
+ ]},
+ {code:'A5',title:'Width and depth',note:'Do not stack. Stretch defenders with different lanes and different depths.',phases:[
+  {c:'Setup - C carries into attack. WA is wide, GA is inside at a different depth, GS stays deep.',b:'C',p:{C:[150,235],WA:[55,160],GA:[215,125],GS:[150,55]},a:[]},
+  {c:'1. WA holds width instead of collapsing toward the ball.',b:'C',p:{C:[150,220],WA:[45,145],GA:[215,125],GS:[150,55]},a:[['WA',[55,160],[45,145],'move']]},
+  {c:'2. GA changes depth and becomes the inside connection.',b:'C',p:{C:[150,220],WA:[45,145],GA:[195,105],GS:[150,55]},a:[['GA',[215,125],[195,105],'move']]},
+  {c:'3. C now sees separated options. GS remains the deepest target.',b:'GA',p:{C:[150,220],WA:[45,145],GA:[195,105],GS:[150,55]},a:[['ball',[150,220],[195,105],'pass']]}
+ ]},
+ {code:'A6',title:'Connected Zone Defence',note:'This is a defensive plan. The unit shifts with the opposition ball and protects space together.',phases:[
+  {c:'SETUP - Opposition C has possession. Our WD, C, GD and GK form connected layers between the ball and our defensive goal at the bottom.',b:'oC',p:{WD:[85,350],C:[150,365],GD:[205,455],GK:[150,530]},d:{oC:[150,300],oWA:[80,385],oGA:[215,445],oGS:[150,535]},a:[]},
+  {c:'1. OPP PASS 1 - Ball moves to opposition WA. WD closes under control. C slides across to protect the inside lane instead of chasing the same player.',b:'oWA',p:{WD:[90,375],C:[135,390],GD:[195,455],GK:[150,530]},d:{oC:[150,300],oWA:[80,385],oGA:[215,445],oGS:[150,535]},a:[['ball',[150,300],[80,385],'oppPass'],['WD',[85,350],[90,375],'move'],['C',[150,365],[135,390],'move']]},
+  {c:'2. OPP PASS 2 - Ball moves toward GA. GD steps to pressure the new ball position. WD and C recover into passing lanes. GK protects the deepest circle space.',b:'oGA',p:{WD:[105,400],C:[150,415],GD:[200,445],GK:[150,515]},d:{oC:[150,300],oWA:[80,385],oGA:[215,445],oGS:[150,535]},a:[['ball',[80,385],[215,445],'oppPass'],['GD',[195,455],[200,445],'move'],['WD',[90,375],[105,400],'move'],['C',[135,390],[150,415],'move']]},
+  {c:'3. OPP PASS 3 - If GA tries to feed GS, GK contests the receiving space while GD pressures the feed. Everyone else stays connected for rebound or reset.',b:'oGS',p:{WD:[105,400],C:[150,425],GD:[195,465],GK:[150,520]},d:{oC:[150,300],oWA:[80,385],oGA:[215,445],oGS:[150,535]},a:[['ball',[215,445],[150,535],'oppPass'],['GK',[150,515],[150,520],'move'],['GD',[200,445],[195,465],'move']]}
+ ]},
+ {code:'A7',title:'Centre-Pass Defence',note:'Deny the easy first receiver, then recover goal-side and protect the next pass.',phases:[
+  {c:'SETUP - Opposition C has the centre pass. Their WA and GA wait outside the centre third. Our WD and GD set to influence the first leads while our C prepares to close central space.',b:'oC',p:{WD:[85,205],GD:[210,205],C:[150,320],GK:[150,520]},d:{oC:[150,300],oWA:[80,190],oGA:[220,190],oGS:[150,535]},a:[]},
+  {c:'1. WHISTLE - Opposition WA and GA enter the centre third. WD/GD move with the leads. Our C closes the easiest central lane without contacting.',b:'oC',p:{WD:[100,235],GD:[195,235],C:[150,285],GK:[150,520]},d:{oC:[150,300],oWA:[105,245],oGA:[195,245],oGS:[150,535]},a:[['WD',[85,205],[100,235],'fast'],['GD',[210,205],[195,235],'fast'],['C',[150,320],[150,285],'move']]},
+  {c:'2. OPP PASS 1 - If WA receives, WD establishes legal pressure. C and GD immediately protect the next forward options rather than watching the ball.',b:'oWA',p:{WD:[105,255],GD:[185,270],C:[145,275],GK:[150,520]},d:{oC:[150,300],oWA:[105,245],oGA:[195,245],oGS:[150,535]},a:[['ball',[150,300],[105,245],'oppPass'],['GD',[195,235],[185,270],'move']]},
+  {c:'3. OPP PASS 2 - As the ball moves to GA, GD becomes ball pressure. WD recovers goal-side and C protects the middle channel.',b:'oGA',p:{WD:[115,285],GD:[195,275],C:[150,300],GK:[150,520]},d:{oC:[150,300],oWA:[105,245],oGA:[195,275],oGS:[150,535]},a:[['ball',[105,245],[195,275],'oppPass'],['WD',[105,255],[115,285],'move'],['GD',[185,270],[195,275],'move']]},
+  {c:'4. OPP PASS 3 - If the attack moves toward circle entry, the unit recovers goal-side. GD pressures the feeder while GK protects GS and the dangerous space.',b:'oGS',p:{WD:[120,330],GD:[200,430],C:[155,350],GK:[150,515]},d:{oC:[150,300],oWA:[105,245],oGA:[205,420],oGS:[150,535]},a:[['ball',[195,275],[205,420],'oppPass'],['WD',[115,285],[120,330],'move'],['GD',[195,275],[200,430],'fast'],['C',[150,300],[155,350],'move']]}
+ ]},
+ {code:'A8',title:'Three passing options - forward, second option, reset',note:'The ball carrier must see more than one answer. This is not a centre-pass setup.',phases:[
+  {c:'SETUP - WA has the ball outside the attacking circle. GA is the forward option, C is the safe reset at the circle edge, and GS holds deep.',b:'WA',p:{WA:[62,122],C:[150,102],GA:[205,82],GS:[145,38]},d:{DGA:[192,88],DGS:[145,58]},a:[]},
+  {c:'1. READ - GA presents forward. C stays visible as the reset. GS holds depth. WA must see all three before choosing.',b:'WA',p:{WA:[62,122],C:[150,102],GA:[190,78],GS:[145,38]},d:{DGA:[180,82],DGS:[145,58]},a:[['GA',[205,82],[190,78],'move']]},
+  {c:'2. PASS 1 - The direct GA feed is pressured, so WA uses the safe reset to C on the goal-circle edge.',b:'C',p:{WA:[62,122],C:[150,102],GA:[190,78],GS:[145,38]},d:{DGA:[180,82],DGS:[145,58]},a:[['ball',[62,122],[150,102],'pass']]},
+  {c:'3. PASS 2 - C moves the defence with a quick pass to GA at a new angle. WA clears and reoffers outside the circle.',b:'GA',p:{WA:[82,145],C:[150,102],GA:[185,74],GS:[145,38]},d:{DGA:[174,80],DGS:[145,58]},a:[['ball',[150,102],[185,74],'pass'],['WA',[62,122],[82,145],'reoffer']]},
+  {c:'4. PASS 3 - GA feeds GS only if the holding space is safe. If GK owns the lane, recycle to C or WA.',b:'GS',p:{WA:[82,145],C:[150,102],GA:[185,74],GS:[135,38]},d:{DGA:[174,80],DGS:[150,58]},a:[['ball',[185,74],[135,38],'pass']]}
+ ]},
+ {code:'A9',title:'Reset before the risky pass',note:'If circle entry closes, go sideways or back, reshape, then attack again.',phases:[
+  {c:'Setup - WA has possession near circle edge. The direct feed is crowded.',b:'WA',p:{WA:[65,115],GA:[195,100],C:[150,220],GS:[145,48]},d:{GK:[145,62],GD:[175,92]},a:[]},
+  {c:'1. The feed is not safe. WA keeps the ball instead of throwing a hope pass.',b:'WA',p:{WA:[65,115],GA:[195,100],C:[150,220],GS:[145,48]},d:{GK:[145,62],GD:[175,92]},a:[]},
+  {c:'2. C stays available behind and sideways as the RESET.',b:'WA',p:{WA:[65,115],GA:[195,100],C:[125,190],GS:[145,48]},d:{GK:[145,62],GD:[175,92]},a:[['C',[150,220],[125,190],'reset']]},
+  {c:'3. WA resets to C. GA, GS and WA reshape for a new entry.',b:'C',p:{WA:[50,135],GA:[210,120],C:[125,190],GS:[125,45]},d:{GK:[140,62],GD:[180,100]},a:[['ball',[65,115],[125,190],'pass'],['WA',[65,115],[50,135],'move'],['GA',[195,100],[210,120],'move']]}
+ ]},
+ {code:'A10',title:'Full-court transition',note:'Our attacking goal is TOP. A defensive gain starts at the BOTTOM and moves up-court.',phases:[
+  {c:'1. GK wins possession in our defensive circle at the bottom. Secure the ball first.',b:'GK',p:{GK:[150,545],GD:[205,500],WD:[80,425],C:[150,350],WA:[70,180],GA:[220,175],GS:[150,60]},a:[]},
+  {c:'2. GD gives the first safe outlet. WD and C spread to connect.',b:'GD',p:{GK:[150,545],GD:[190,490],WD:[95,420],C:[155,350],WA:[70,180],GA:[220,175],GS:[150,60]},a:[['ball',[150,545],[190,490],'pass'],['WD',[80,425],[95,420],'move']]},
+  {c:'3. C links through the centre third. WA and GA get ahead of the ball.',b:'C',p:{GK:[150,545],GD:[190,490],WD:[95,420],C:[155,330],WA:[85,165],GA:[205,155],GS:[150,55]},a:[['ball',[190,490],[155,330],'pass'],['WA',[70,180],[85,165],'fast'],['GA',[220,175],[205,155],'fast']]},
+  {c:'4. Continue toward the TOP attacking goal. GS keeps depth and stretches the last defender.',b:'WA',p:{GK:[150,545],GD:[190,490],WD:[95,420],C:[155,330],WA:[95,185],GA:[195,140],GS:[150,48]},a:[['ball',[155,330],[95,185],'pass']]}
+ ]},
+ {code:'A11',title:'Circle-entry triangle - C feeds from goal-circle edge',note:'C is on the goal-circle edge, outside the circle. GA and GS create two different circle depths while WA stays wide outside.',phases:[
+  {c:'SETUP - C has the ball on the TOP of the goal-circle edge, outside the circle. WA stays wide. GA works front space and GS holds deep.',b:'C',p:{C:[150,102],WA:[62,120],GA:[205,78],GS:[145,36]},d:{GD:[190,82],GK:[145,56]},a:[]},
+  {c:'1. MOVEMENT - GA changes angle across the front. GS stays deep. WA holds width. C keeps both shooters in view.',b:'C',p:{C:[150,102],WA:[62,120],GA:[185,72],GS:[135,36]},d:{GD:[178,78],GK:[145,56]},a:[['GA',[205,78],[185,72],'move'],['GS',[145,36],[135,36],'move']]},
+  {c:'2. PASS 1 - C feeds GA at the front/side of the circle when that lane is safe.',b:'GA',p:{C:[150,102],WA:[62,120],GA:[185,72],GS:[135,36]},d:{GD:[178,78],GK:[145,56]},a:[['ball',[150,102],[185,72],'pass']]},
+  {c:'3. PASS 2 - GA moves the ball to GS if GK has been displaced and GS owns the landing space. C stays available on the circle edge.',b:'GS',p:{C:[150,102],WA:[62,120],GA:[185,72],GS:[130,38]},d:{GD:[178,78],GK:[145,56]},a:[['ball',[185,72],[130,38],'pass']]},
+  {c:'4. PASS 3 - If the shot is not on, GS returns to GA or the circle-edge C reset. Do not force a feed through a defender.',b:'GA',p:{C:[150,102],WA:[62,120],GA:[172,70],GS:[130,38]},d:{GD:[168,80],GK:[142,54]},a:[['ball',[130,38],[172,70],'pass'],['GA',[185,72],[172,70],'reoffer']]}
+ ]},
+ {code:'A12',title:'Split landing - balanced landing technique',note:'Clip skill: land under control with a stable split base. Team continuation: eyes up, safe pass, then support.',phases:[
+  {c:'Setup - WA has the ball outside the attacking circle. GA presents inside.',b:'WA',p:{WA:[65,125],GA:[190,95],C:[145,220],GS:[140,45]},a:[]},
+  {c:'1. WA feeds GA.',b:'GA',p:{WA:[65,125],GA:[190,95],C:[145,220],GS:[140,45]},a:[['ball',[65,125],[190,95],'pass']]},
+  {c:'2. WA clears away from the original lane immediately after passing.',b:'GA',p:{WA:[45,155],GA:[190,95],C:[145,220],GS:[140,45]},a:[['WA',[65,125],[45,155],'move']]},
+  {c:'3. WA changes direction and reoffers at a new legal circle-edge angle.',b:'GA',p:{WA:[92,105],GA:[190,95],C:[145,220],GS:[140,45]},a:[['WA',[45,155],[92,105],'reoffer']]}
+ ]},
+ {code:'A13',title:'Decision-making under pressure',note:'The structure guides the players. The defence decides which option is actually safe.',phases:[
+  {c:'Setup - C sees WA, GA and a reset. Defenders are changing the picture.',b:'C',p:{C:[150,300],WA:[80,235],GA:[220,225],WD:[110,360],GS:[150,65]},d:{DWA:[95,225],DGA:[205,215]},a:[]},
+  {c:'1. WA starts as the first option but her defender closes the lane.',b:'C',p:{C:[150,300],WA:[105,220],GA:[220,225],WD:[110,360],GS:[150,65]},d:{DWA:[108,218],DGA:[205,215]},a:[['WA',[80,235],[105,220],'move']]},
+  {c:'2. GA adjusts while WD remains the safe reset. C does not panic.',b:'C',p:{C:[150,300],WA:[105,220],GA:[190,210],WD:[120,345],GS:[150,65]},d:{DWA:[108,218],DGA:[207,212]},a:[['GA',[220,225],[190,210],'reoffer'],['WD',[110,360],[120,345],'reset']]},
+  {c:'3. If both forward lanes remain unsafe, use the reset and rebuild.',b:'WD',p:{C:[150,300],WA:[105,220],GA:[190,210],WD:[120,345],GS:[150,65]},d:{DWA:[108,218],DGA:[207,212]},a:[['ball',[150,300],[120,345],'pass']]}
+ ]},
+ {code:'D1',title:'Defensive body position and pressure',note:'Opposition attacks toward our defensive goal at the BOTTOM. Defender stays goal-side and balanced.',phases:[
+  {c:'Setup - opposition WA is in the centre third. Our WD is goal-side, between attacker and bottom defensive goal.',b:'oWA',opp:{oWA:[95,330]},p:{WD:[105,350],C:[175,315],GD:[190,430],GK:[150,535]},a:[]},
+  {c:'1. Attacker drives toward our defensive end. WD shadows with controlled feet.',b:'oWA',opp:{oWA:[125,365]},p:{WD:[130,385],C:[175,315],GD:[190,430],GK:[150,535]},a:[['WD',[105,350],[130,385],'defend']]},
+  {c:'2. WD closes the easy lane without lunging past the attacker.',b:'oWA',opp:{oWA:[145,390]},p:{WD:[150,410],C:[165,330],GD:[185,440],GK:[150,535]},a:[['WD',[130,385],[150,410],'press']]},
+  {c:'3. If beaten, recover toward goal-side space. Pressure can succeed without an intercept.',b:'oWA',opp:{oWA:[165,415]},p:{WD:[165,435],C:[160,345],GD:[180,455],GK:[150,535]},a:[['WD',[150,410],[165,435],'defend']]}
+ ]},
+ {code:'D2',title:'Defending as a unit',note:'One pressures the ball. Others protect the next pass and deepest dangerous space.',phases:[
+  {c:'Setup - opposition attacks DOWN toward our bottom goal. Our defensive unit is connected.',b:'oC',opp:{oC:[150,320],oWA:[75,375],oGA:[220,455],oGS:[150,535]},p:{C:[150,340],WD:[92,395],GD:[195,470],GK:[150,555]},a:[]},
+  {c:'1. C applies controlled pressure to the ball carrier.',b:'oC',opp:{oC:[150,320],oWA:[75,375],oGA:[220,455],oGS:[150,535]},p:{C:[150,337],WD:[92,395],GD:[195,470],GK:[150,555]},a:[['C',[150,340],[150,337],'press']]},
+  {c:'2. WD protects the next midcourt pass. GD protects circle entry. GK protects depth.',b:'oC',opp:{oC:[150,320],oWA:[75,385],oGA:[215,465],oGS:[150,535]},p:{C:[150,337],WD:[88,405],GD:[195,480],GK:[150,555]},a:[['WD',[92,395],[88,405],'defend'],['GD',[195,470],[195,480],'defend']]},
+  {c:'3. When the ball changes side, the entire unit shifts. Nobody becomes a spectator.',b:'oWA',opp:{oC:[150,320],oWA:[75,385],oGA:[215,465],oGS:[150,535]},p:{C:[125,350],WD:[82,402],GD:[175,480],GK:[145,555]},a:[['ball',[150,320],[75,385],'oppPass'],['C',[150,337],[125,350],'defend'],['GD',[195,480],[175,480],'defend']]}
+ ]},
+ {code:'E1',title:'Elite off-ball movement principle map',note:'This is a principle map, not a frame-for-frame tracing of one elite possession.',phases:[
+  {c:'Watch the players without the ball. Start with shape: width, depth and a reset behind.',b:'C',p:{C:[150,315],WA:[70,245],GA:[220,215],WD:[95,365],GS:[150,65]},a:[]},
+  {c:'1. WA moves early before the passer needs her.',b:'C',p:{C:[150,315],WA:[95,220],GA:[220,215],WD:[95,365],GS:[150,65]},a:[['WA',[70,245],[95,220],'move']]},
+  {c:'2. GA clears a useful space instead of following the ball.',b:'C',p:{C:[150,315],WA:[95,220],GA:[205,175],WD:[95,365],GS:[150,65]},a:[['GA',[220,215],[205,175],'move']]},
+  {c:'3. WD remains behind as reset. After the pass, C moves again rather than watching.',b:'WA',p:{C:[185,290],WA:[95,220],GA:[205,175],WD:[105,350],GS:[150,65]},a:[['ball',[150,315],[95,220],'pass'],['C',[150,315],[185,290],'reoffer'],['WD',[95,365],[105,350],'reset']]}
+ ]},
+ {code:'E2',title:'Loaded-stack timing',note:'Centre-pass setup stays legal. First movement shifts a defender; second movement attacks the space created.',phases:[
+  {c:'BEFORE WHISTLE - WA and GA are loaded on one side but remain outside the centre third.',b:'C',p:{C:[150,300],WA:[92,190],GA:[125,185],GS:[150,65]},d:{DWA:[105,178],DGA:[140,175]},a:[]},
+  {c:'1. WHISTLE - WA goes first across the transverse line and takes her defender.',b:'C',p:{C:[150,300],WA:[105,240],GA:[125,185],GS:[150,65]},d:{DWA:[118,228],DGA:[140,175]},a:[['WA',[92,190],[105,240],'fast']]},
+  {c:'2. GA waits, then attacks the space left by the first movement.',b:'C',p:{C:[150,300],WA:[105,240],GA:[170,230],GS:[150,65]},d:{DWA:[118,228],DGA:[148,205]},a:[['GA',[125,185],[170,230],'fast']]},
+  {c:'3. C reads the new picture and passes to the free option.',b:'GA',p:{C:[150,300],WA:[105,240],GA:[170,230],GS:[150,65]},d:{DWA:[118,228],DGA:[148,205]},a:[['ball',[150,300],[170,230],'pass']]}
+ ]}
+];
+
+function fullCourtBackground(){
+ return `<rect x="4" y="4" width="292" height="592" rx="4" fill="none" stroke="rgba(255,255,255,.78)" stroke-width="2"/>
+ <line x1="4" y1="201" x2="296" y2="201" stroke="rgba(255,255,255,.7)" stroke-width="1.5"/>
+ <line x1="4" y1="399" x2="296" y2="399" stroke="rgba(255,255,255,.7)" stroke-width="1.5"/>
+ <circle cx="150" cy="300" r="9" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.5"/>
+ <path d="M56,4 A94,94 0 0 0 244,4" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.5"/>
+ <path d="M56,596 A94,94 0 0 1 244,596" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.5"/>
+ <circle cx="150" cy="4" r="3" fill="#E7A93B"/><circle cx="150" cy="596" r="3" fill="#E7A93B"/>
+ <text x="150" y="18" text-anchor="middle" fill="#E7A93B" font-size="9" font-weight="800">OUR ATTACKING GOAL</text>
+ <text x="150" y="590" text-anchor="middle" fill="#E7A93B" font-size="9" font-weight="800">OUR DEFENSIVE GOAL</text>
+ <text x="286" y="110" text-anchor="end" fill="rgba(255,255,255,.45)" font-size="8">ATTACKING THIRD</text>
+ <text x="286" y="305" text-anchor="end" fill="rgba(255,255,255,.45)" font-size="8">CENTRE THIRD</text>
+ <text x="286" y="500" text-anchor="end" fill="rgba(255,255,255,.45)" font-size="8">DEFENSIVE THIRD</text>`;
+}
+function fcPlayer(x,y,label,ball,opp=false){
+ const ring=ball?`<circle cx="${x}" cy="${y}" r="17" fill="none" stroke="#E7A93B" stroke-width="3"/>`:'';
+ const fill=opp?'#5D6A73':'#F3EEE2', text=opp?'#F3EEE2':'#0B1B27';
+ return `<g>${ring}<circle cx="${x}" cy="${y}" r="12" fill="${fill}" stroke="#0B1B27" stroke-width="1.5"/>${ball?`<circle cx="${x+14}" cy="${y-14}" r="6" fill="#E7A93B" stroke="#0B1B27" stroke-width="1.5"/>`:''}<text x="${x}" y="${y+4}" text-anchor="middle" font-size="9" font-weight="800" fill="${text}" font-family="sans-serif">${label.replace(/^o/,'').replace(/^D/,'D')}</text></g>`;
+}
+function fcArrow(from,to,type,n){
+ const dash=(type==='reoffer'||type==='reset'||type==='defend')?'stroke-dasharray="6 5"':'';
+ const color=(type==='pass'||type==='oppPass'||type==='lob')?'#E7A93B':'#F3EEE2';
+ const mx=(from[0]+to[0])/2,my=(from[1]+to[1])/2;
+ if(type==='lob'){
+   const lift=Math.max(28,Math.abs(to[1]-from[1])*0.22);
+   const cx=mx, cy=Math.min(from[1],to[1])-lift;
+   return `<g><path d="M ${from[0]} ${from[1]} Q ${cx} ${cy} ${to[0]} ${to[1]}" fill="none" stroke="${color}" stroke-width="3" stroke-dasharray="4 3" marker-end="url(#fcArrow)"/><circle cx="${mx}" cy="${cy+10}" r="9" fill="#0B1B27" stroke="${color}"/><text x="${mx}" y="${cy+13}" text-anchor="middle" font-size="8" font-weight="800" fill="${color}">${n}</text><text x="${mx}" y="${cy-3}" text-anchor="middle" font-size="8" font-weight="800" fill="${color}">LOB</text></g>`;
+ }
+ return `<g><line x1="${from[0]}" y1="${from[1]}" x2="${to[0]}" y2="${to[1]}" stroke="${color}" stroke-width="2.5" ${dash} marker-end="url(#fcArrow)"/><circle cx="${mx}" cy="${my}" r="8" fill="#0B1B27" stroke="${color}"/><text x="${mx}" y="${my+3}" text-anchor="middle" font-size="8" font-weight="800" fill="${color}">${n}</text></g>`;
+}
+
+// ---------- THREE-PASS GAME-PLAN SEQUENCES ----------
+// Every tactical diagram finishes with three visible ball passes. These are the
+// team's game-plan continuation of the clip principle, not a claim that every
+// source clip itself contains exactly three passes.
+const threePassRoutes = {
+ A1:[['C','WA'],['WA','GA'],['GA','GS']],
+ A2:[['C','GA'],['GA','C'],['C','GS']],
+ A3:[['C','GA'],['GA','WA'],['WA','GS']],
+ A4:[['WA','GA'],['GA','C'],['C','WA']],
+ A5:[['C','GA'],['GA','WA'],['WA','GS']],
+ A6:[['oC','oWA'],['oWA','oGA'],['oGA','oGS']],
+ A7:[['oC','oWA'],['oWA','oGA'],['oGA','oGS']],
+ A8:null,
+ A9:[['WA','C'],['C','GA'],['GA','GS']],
+ A10:[['GK','GD'],['GD','C'],['C','WA']],
+ A11:null,
+ A12:[['C','WA'],['WA','GA'],['GA','GS']],
+ A13:[['C','WD'],['WD','C'],['C','GA']],
+ D1:[['oWA','oC'],['oC','oGA'],['oGA','oGS']],
+ D2:[['oC','oWA'],['oWA','oGA'],['oGA','oGS']],
+ E1:[['C','WA'],['WA','GA'],['GA','C']],
+ E2:[['C','GA'],['GA','C'],['C','GS']]
+};
+
+const legalFallback = {
+ C:[150,300], WA:[85,165], GA:[205,145], GS:[150,55], WD:[95,350], GD:[205,470], GK:[150,545],
+ oC:[150,320], oWA:[85,385], oGA:[210,455], oGS:[150,535]
+};
+
+function buildThreePassPhases(data){
+ const route=threePassRoutes[data.code];
+ if(!route) return data.phases;
+ // A1, A2 and A3 are deliberately different centre-pass plans.
+ if(data.code==='A1'){
+   const c=[150,300], wa0=[78,198], wa1=[108,238], ga0=[220,198], ga1=[188,150], gs=[150,55];
+   return [
+    {c:'SETUP - C in centre circle. WA and GA start legally outside centre third. GS holds deep.',b:'C',p:{C:c,WA:wa0,GA:ga0,GS:gs},a:[]},
+    {c:'MOVE 1 - WA makes the first strong diagonal lead into the centre third. GA stays out of the lane.',b:'C',p:{C:c,WA:wa1,GA:ga0,GS:gs},a:[['WA',wa0,wa1,'fast']]},
+    {c:'PASS 1 OF 3 - C → WA. The first lead wins the centre pass.',b:'WA',p:{C:c,WA:wa1,GA:ga0,GS:gs},a:[['ball',c,wa1,'pass']]},
+    {c:'MOVE 2 - GA now drives forward into a separate attacking channel. WA gets eyes up.',b:'WA',p:{C:c,WA:wa1,GA:ga1,GS:gs},a:[['GA',ga0,ga1,'fast']]},
+    {c:'PASS 2 OF 3 - WA → GA. We keep going forward through the second attacker.',b:'GA',p:{C:c,WA:wa1,GA:ga1,GS:gs},a:[['ball',wa1,ga1,'pass']]},
+    {c:'MOVE 3 - GS holds depth, then presents late into safe feeding space.',b:'GA',p:{C:c,WA:wa1,GA:ga1,GS:gs},a:[]},
+    {c:'PASS 3 OF 3 - GA → GS only if the feed is safe. Otherwise reset.',b:'GS',p:{C:c,WA:wa1,GA:ga1,GS:gs},a:[['ball',ga1,gs,'pass']]}
+   ];
+ }
+ if(data.code==='A2'){
+   const c0=[150,300], c1=[150,118], wa0=[78,198], wa1=[108,238], ga0=[220,190], ga1=[190,238], gs=[150,52];
+   return [
+    {c:'SETUP - C in centre circle. WA and GA outside centre third. GS holds deep.',b:'C',p:{C:c0,WA:wa0,GA:ga0,GS:gs},a:[]},
+    {c:'MOVE 1 - WA goes early to move the defence. GA deliberately waits.',b:'C',p:{C:c0,WA:wa1,GA:ga0,GS:gs},a:[['WA',wa0,wa1,'fast']]},
+    {c:'MOVE 2 - GA now explodes into the opposite centre-third channel.',b:'C',p:{C:c0,WA:wa1,GA:ga1,GS:gs},a:[['GA',ga0,ga1,'fast']]},
+    {c:'PASS 1 OF 3 - C → GA when GA wins the timed second lead.',b:'GA',p:{C:c0,WA:wa1,GA:ga1,GS:gs},a:[['ball',c0,ga1,'pass']]},
+    {c:'MOVE 3 - C immediately drives hard to the attacking circle edge.',b:'GA',p:{C:c1,WA:wa1,GA:ga1,GS:gs},a:[['C',c0,c1,'fast']]},
+    {c:'PASS 2 OF 3 - GA → C at circle edge.',b:'C',p:{C:c1,WA:wa1,GA:ga1,GS:gs},a:[['ball',ga1,c1,'pass']]},
+    {c:'READ - GS HOLDS. C checks GK and the landing space.',b:'C',p:{C:c1,WA:wa1,GA:ga1,GS:gs},d:{DGS:[150,72]},a:[]},
+    {c:'PASS 3 OF 3 - C → GS high lob only when GS owns the space. Otherwise reset.',b:'GS',p:{C:c1,WA:wa1,GA:ga1,GS:gs},d:{DGS:[150,72]},a:[['ball',c1,gs,'lob']]}
+   ];
+ }
+ if(data.code==='A3'){
+   const c=[150,300], wa=[88,198], ga=[102,198], gs0=[150,55], gd0=[210,402];
+   const gd1=[205,345], gs1=[180,125], ga1=[135,72], wa1=[58,165];
+   return [
+    {c:'SETUP - CORNER STACK. WA and GA hold ON the attacking transverse line, goal-third side. GD starts ON the defensive transverse line, defensive-third side. C has the centre pass. GS starts in the circle.',b:'C',p:{C:c,WA:wa,GA:ga,GS:gs0,GD:gd0},a:[]},
+    {c:'MOVE 1 - WHISTLE. STACK HOLDS. GD drives forward into the centre third as the surprise first receiver.',b:'C',p:{C:c,WA:wa,GA:ga,GS:gs0,GD:gd1},a:[['GD',gd0,gd1,'fast']]},
+    {c:'PASS 1 OF 3 - C → GD once GD is wholly inside the centre third.',b:'GD',p:{C:c,WA:wa,GA:ga,GS:gs0,GD:gd1},a:[['ball',c,gd1,'pass']]},
+    {c:'MOVE 2 - GS OUT. GS drives out of the circle to link. GA releases from the stack and gets ready to punch. WA clears wide.',b:'GD',p:{C:[150,285],WA:wa1,GA:[105,170],GS:gs1,GD:gd1},a:[['GS',gs0,gs1,'fast'],['GA',ga,[105,170],'move'],['WA',wa,wa1,'move']]},
+    {c:'PASS 2 OF 3 - GD → GS outside the goal circle. GA PUNCHES hard into the circle as the pass travels.',b:'GS',p:{C:[150,275],WA:wa1,GA:ga1,GS:gs1,GD:gd1},a:[['ball',gd1,gs1,'pass'],['GA',[105,170],ga1,'fast']]},
+    {c:'PASS 3 OF 3 - GS → GA in the goal circle. GA lands balanced and turns to post.',b:'GA',p:{C:[150,275],WA:wa1,GA:ga1,GS:gs1,GD:gd1},a:[['ball',gs1,ga1,'pass']]},
+    {c:'FINISH - GA shoots. GS follows for rebound. If any pass is covered, do not force it: use WA/C as the safety reset.',b:'GA',p:{C:[150,275],WA:wa1,GA:ga1,GS:[165,88],GD:gd1},a:[['GS',gs1,[165,88],'move']]}
+   ];
+ }
+ if(data.code==='E2'){
+   const first='GA', firstStart=[218,190], firstReceive=[188,240], cStart=[150,300], cEdge=[150,118], gsHold=[150,52], otherPos=[80,185];
+   return [
+    {c:'SETUP - loaded-stack timing. WA movement shifts the defender; GA is the second peel.',b:'C',p:{C:cStart,GA:firstStart,WA:otherPos,GS:gsHold},a:[]},
+    {c:'MOVE 1 - WA shifts the defence. GA peels into the space created.',b:'C',p:{C:cStart,GA:firstReceive,WA:[110,230],GS:gsHold},a:[['GA',firstStart,firstReceive,'fast']]},
+    {c:'PASS 1 OF 3 - C → GA.',b:'GA',p:{C:cStart,GA:firstReceive,WA:[110,230],GS:gsHold},a:[['ball',cStart,firstReceive,'pass']]},
+    {c:'MOVE 2 - C drives to circle edge.',b:'GA',p:{C:cEdge,GA:firstReceive,WA:[110,230],GS:gsHold},a:[['C',cStart,cEdge,'fast']]},
+    {c:'PASS 2 OF 3 - GA → C.',b:'C',p:{C:cEdge,GA:firstReceive,WA:[110,230],GS:gsHold},a:[['ball',firstReceive,cEdge,'pass']]},
+    {c:'PASS 3 OF 3 - C → GS lob only if safe.',b:'GS',p:{C:cEdge,GA:firstReceive,WA:[110,230],GS:gsHold},d:{DGS:[150,72]},a:[['ball',cEdge,gsHold,'lob']]}
+   ];
+ }
+ const base=data.phases[data.phases.length-1];
+ let pos=JSON.parse(JSON.stringify(base.p||{}));
+ let opp=JSON.parse(JSON.stringify(base.opp||{}));
+ let def=JSON.parse(JSON.stringify(base.d||{}));
+ const get=(name)=> (name.startsWith('o') ? opp[name] : pos[name]) || legalFallback[name];
+ const set=(name,xy)=>{ if(name.startsWith('o')) opp[name]=xy; else pos[name]=xy; };
+ // Ensure every route player is visible at a legal representative location.
+ route.flat().forEach(name=>{ if(!get(name)) set(name, legalFallback[name]||[150,300]); });
+ const out=[];
+ route.forEach((pair,i)=>{
+   const [from,to]=pair;
+   const f=get(from), t=get(to);
+   // Before each pass, show a purposeful receiving movement where possible.
+   let moved=[t[0],t[1]];
+   if(i<2){
+     const dx = (i%2===0 ? -10 : 10);
+     const dy = nameAttackDirection(data.code,to);
+     moved=[Math.max(25,Math.min(275,t[0]+dx)), Math.max(25,Math.min(575,t[1]+dy))];
+     set(to,moved);
+     out.push({c:`MOVE ${i+1} - ${to.replace(/^o/,'')} creates the next passing angle before Pass ${i+1}.`,b:from,p:JSON.parse(JSON.stringify(pos)),opp:JSON.parse(JSON.stringify(opp)),d:JSON.parse(JSON.stringify(def)),a:[[to,t,moved,'move']]});
+   }
+   out.push({c:`PASS ${i+1} OF 3 - ${from.replace(/^o/,'')} to ${to.replace(/^o/,'')}. Follow the ball, then immediately create the next option.`,b:to,p:JSON.parse(JSON.stringify(pos)),opp:JSON.parse(JSON.stringify(opp)),d:JSON.parse(JSON.stringify(def)),a:[['ball',f,moved,(data.code[0]==='D'?'oppPass':'pass')]]});
+ });
+ return out;
+}
+function nameAttackDirection(code,name){
+ // Our attack travels upward. Opposition in defensive diagrams travels downward.
+ if(name.startsWith('o') || code[0]==='D' || code==='A6' || code==='A7') return 12;
+ return -12;
+}
+
+function renderTrainingClipDiagrams(){
+ const mount=document.getElementById('clipDiagramLibrary'); if(!mount)return;
+ trainingClipDiagrams.forEach(d=>{ d.phases=buildThreePassPhases(d); });
+ mount.innerHTML=trainingClipDiagrams.map((d,i)=>`<div class="clip-diagram-item" data-cdiag="${i}"><div class="clip-diagram-title"><strong>${d.code} - ${d.title}</strong><span>${clipData[d.code]?.lens||''}</span></div><p class="clip-diagram-note"><strong>Clip lesson:</strong> ${deepDive[d.code]?.purpose||d.note} <span style="opacity:.8">The moving court is a team practice example of that principle, not a frame-by-frame copy of the video.</span></p>${['A1','A2','A3','E2'].includes(d.code)?'<div class="centre-line-note">CENTRE PASS SETUP: WA / GA / stack players begin on the attacking transverse line, goal-third side, then enter the centre third after the whistle.</div>':''}<div class="clip-diagram-layout"><div class="full-court-wrap"><svg class="full-court-svg" viewBox="0 0 300 600" aria-label="Regulation netball movement diagram for ${d.title}"></svg></div><aside class="clip-diagram-side"><a class="gameplan-thumb" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=${clipData[d.code]?.id||''}"><img src="https://img.youtube.com/vi/${clipData[d.code]?.id||''}/hqdefault.jpg" alt="${d.code} clip thumbnail" loading="lazy"><span class="gp-watch">▶ WATCH NOW - ${d.code}</span></a><div class="clip-diagram-controls"><button class="primary" data-cact="play">▶ Play full sequence</button><button data-cact="back">⏮ Back</button><button data-cact="next">Next ⏭</button><button data-cact="reset">↺ Reset</button><a class="btn-link" target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=${clipData[d.code]?.id||''}">▶ Watch clip</a></div><div class="pass-sequence-key">CLIP-MATCHED COACHING NOTES</div><div class="movement-guide"><div class="movement-guide-title">WHAT TO LEARN FROM THIS CLIP</div><div class="movement-step"><span class="movement-num">1</span><div><strong>${deepDive[d.code]?.cue||'WATCH THE PRINCIPLE'}</strong><div class="movement-detail">${deepDive[d.code]?.purpose||'Watch the linked clip and focus only on the movement principle shown.'}</div></div></div><div class="movement-guide-title" style="margin-top:10px">WATCH THESE DETAILS</div>${(clipData[d.code]?.lookFor||[]).map((txt,pi)=>`<div class="movement-step"><span class="movement-num">${pi+2}</span><div><div class="movement-detail">${txt}</div></div></div>`).join('')}<div class="movement-guide-title" style="margin-top:10px">TEAM PRACTICE AFTER WATCHING</div><div class="movement-step"><span class="movement-num">→</span><div><div class="movement-detail">${deepDive[d.code]?.practice||'Practise the principle shown in the clip before adding live defence.'}</div></div></div><div class="movement-guide-title" style="margin-top:10px">DECISION RULE</div><div class="movement-step"><span class="movement-num">↺</span><div><div class="movement-detail">${deepDive[d.code]?.alt||'Keep possession and use the safe option.'}</div></div></div></div></aside></div></div>`).join('');
+ mount.querySelectorAll('[data-cdiag]').forEach(el=>{const data=trainingClipDiagrams[Number(el.dataset.cdiag)];let idx=0,timer=null;const svg=el.querySelector('svg'),cap=el.querySelector('.clip-phase'),play=el.querySelector('[data-cact="play"]');
+  const draw=()=>{const ph=data.phases[idx];let x=`<defs><marker id="fcArrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="context-stroke"/></marker></defs>`+fullCourtBackground();(ph.a||[]).forEach((a,j)=>x+=fcArrow(a[1],a[2],a[3],idx+1));Object.entries(ph.p||{}).forEach(([k,v])=>x+=fcPlayer(v[0],v[1],k,ph.b===k,false));Object.entries(ph.opp||{}).forEach(([k,v])=>x+=fcPlayer(v[0],v[1],k,ph.b===k,true));Object.entries(ph.d||{}).forEach(([k,v])=>x+=fcPlayer(v[0],v[1],k,ph.b===k,true));svg.innerHTML=x;if(cap)cap.innerHTML=`<strong>STEP ${idx+1} OF ${data.phases.length}</strong><br>${ph.c}`;};
+  el.addEventListener('click',e=>{const b=e.target.closest('button[data-cact]');if(!b)return;const a=b.dataset.cact;if(a==='next'){idx=Math.min(idx+1,data.phases.length-1);draw();}if(a==='back'){idx=Math.max(idx-1,0);draw();}if(a==='reset'){idx=0;if(timer){clearInterval(timer);timer=null;play.textContent='▶ Play full sequence';}draw();}if(a==='play'){if(timer){clearInterval(timer);timer=null;play.textContent='▶ Play full sequence';return;}idx=0;draw();play.textContent='⏸ Pause';timer=setInterval(()=>{idx++;if(idx>=data.phases.length){clearInterval(timer);timer=null;idx=data.phases.length-1;play.textContent='▶ Play full sequence';return;}draw();},1800);}});draw();
+ });
+}
+
+// ---------- POSITIONS ----------
+function renderPositions(){
+  const grid = document.getElementById('posGrid');
+  const order = ['GS','GA','WA','C','WD','GD','GK'];
+  grid.innerHTML = order.map(p=>`<button class="pos-btn ${state.position===p?'selected':''}" data-pos="${p}">${p}</button>`).join('');
+  grid.querySelectorAll('.pos-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      grid.querySelectorAll('.pos-btn').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
+      state.position = btn.dataset.pos;
+      saveState();
+      renderPosDetail();
+    });
+  });
+  renderPosDetail();
+}
+function renderPosDetail(){
+  const box = document.getElementById('posDetail');
+  if(!state.position){ box.innerHTML = '<p style="color:#9AA8B3;font-size:13px;">Tap a position above to see your ten cues.</p>'; return; }
+  const list = positions[state.position];
+  box.innerHTML = `<h3 style="margin-top:0;">${state.position} — ten things to remember</h3>` +
+    list.map((item,i)=>`
+      <div class="rule-item" style="margin-bottom:12px;">
+        <div class="rule-num">${i+1}</div>
+        <div><div class="title">"${item.cue}"</div><div class="desc">${item.detail}</div></div>
+      </div>`).join('');
+}
+
+// ---------- TRAINING ----------
+function renderTraining(list, mountId){
+  document.getElementById(mountId).innerHTML = list.map(t=>{
+    const code=t[3]||'';
+    const clip=clipData[code];
+    const videoId=clip?.id||'';
+    const videoUrl=videoId?`https://www.youtube.com/watch?v=${videoId}`:'#';
+    const thumb=videoId?`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`:'';
+    return `<div class="training-visual-card">
+      <a class="training-thumb" href="${videoUrl}" target="_blank" rel="noopener" aria-label="Watch ${code} clip">
+        ${thumb?`<img src="${thumb}" alt="${code} training clip thumbnail" loading="lazy">`:''}
+        <span class="training-watch">▶ WATCH NOW${code?' - '+code:''}</span>
+      </a>
+      <div class="training-copy">
+        <div class="training-head"><span class="training-time">${t[0]}</span>${code?`<span class="training-code">${code}</span>`:''}</div>
+        <div class="training-title">${t[1]}</div>
+        <div class="training-why">${t[2]}</div>
+        <div class="training-actions">${code?`<a class="btn-link" href="${videoUrl}" target="_blank" rel="noopener">▶ WATCH CLIP</a><button class="watch-toggle" data-open-gameplan="${code}">OPEN GAME PLAN</button>`:''}</div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById(mountId).querySelectorAll('[data-open-gameplan]').forEach(btn=>btn.addEventListener('click',()=>{
+    const tab=document.querySelector('button[data-tab="gameplan"]'); if(tab) tab.click();
+    setTimeout(()=>{const target=[...document.querySelectorAll('.clip-diagram-item')].find(el=>el.querySelector('.clip-diagram-title strong')?.textContent.startsWith(btn.dataset.openGameplan+' ')); target?.scrollIntoView({behavior:'smooth',block:'start'});},80);
+  }));
+}
+document.querySelectorAll('.week-toggle button[data-tweek]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.week-toggle button[data-tweek]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('training1Card').style.display = btn.dataset.tweek==='1'?'block':'none';
+    document.getElementById('training2Card').style.display = btn.dataset.tweek==='2'?'block':'none';
+  });
+});
+
+// ---------- QUIZ ----------
+let currentQuizWeek = 1;
+let qIndex = 0;
+let qScore = 0;
+let answered = false;
+
+function startQuiz(week){
+  currentQuizWeek = week;
+  qIndex = 0; qScore = 0; answered = false;
+  renderQuizQuestion();
+}
+function renderQuizQuestion(){
+  const list = quizzes[currentQuizWeek];
+  document.getElementById('quizProgressText').textContent = `Question ${qIndex+1} of ${list.length}`;
+  const best = state.quizBest[currentQuizWeek];
+  document.getElementById('quizBestText').textContent = best!=null ? `Best: ${best}/${list.length}` : '';
+
+  if(qIndex >= list.length){
+    const pct = qScore/list.length;
+    const passMsg = pct>=0.8 ? "Finals ready — great work." : "Not quite yet — have another look.";
+    document.getElementById('quizBody').innerHTML = `
+      <div class="quiz-result">
+        <div class="score">${qScore}/${list.length}</div>
+        <div class="msg">${passMsg}</div>
+        <button class="retake-btn" id="retakeBtn">Retake quiz</button>
+      </div>`;
+    document.getElementById('retakeBtn').addEventListener('click', ()=>startQuiz(currentQuizWeek));
+    if(best==null || qScore>best){
+      state.quizBest[currentQuizWeek] = qScore;
+      saveState();
+    }
+    return;
+  }
+
+  const q = list[qIndex];
+  answered = false;
+  document.getElementById('quizBody').innerHTML = `
+    <div class="quiz-q">
+      <div class="qtext">${q.q}</div>
+      <div class="quiz-opts">
+        ${q.opts.map((o,i)=>`<button class="quiz-opt" data-i="${i}">${o}</button>`).join('')}
+      </div>
+      <div class="quiz-feedback" id="quizFeedback" style="display:none;"></div>
+    </div>`;
+  document.querySelectorAll('.quiz-opt').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      if(answered) return;
+      answered = true;
+      const i = parseInt(btn.dataset.i);
+      document.querySelectorAll('.quiz-opt').forEach((b,bi)=>{
+        b.setAttribute('disabled','');
+        if(bi===q.correct) b.classList.add('correct');
+        else if(bi===i) b.classList.add('wrong');
+      });
+      if(i===q.correct) qScore++;
+      const fb = document.getElementById('quizFeedback');
+      fb.style.display='block';
+      fb.textContent = q.note;
+      setTimeout(()=>{ qIndex++; renderQuizQuestion(); }, 1600);
+    });
+  });
+}
+document.querySelectorAll('.week-toggle button[data-qweek]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.week-toggle button[data-qweek]').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    startQuiz(parseInt(btn.dataset.qweek));
+  });
+});
+
+// ---------- FULLSCREEN VIDEO MODAL ----------
+const videoModal = document.getElementById('videoModal');
+function openVideoModal(code){
+  const c = clipData[code];
+  if(!c) return;
+  document.getElementById('vmTitle').textContent = code + ' — ' + c.lens;
+  document.getElementById('vmThumb').src = `https://img.youtube.com/vi/${c.id}/hqdefault.jpg`;
+  document.getElementById('vmLens').textContent = c.why;
+  document.getElementById('vmWatchLink').href = `https://www.youtube.com/watch?v=${c.id}`;
+  videoModal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeVideoModal(){
+  videoModal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('vmClose').addEventListener('click', closeVideoModal);
+videoModal.addEventListener('click', e=>{ if(e.target === videoModal) closeVideoModal(); });
+
+// Delegated handlers for dynamically-rendered clip cards
+document.addEventListener('click', e=>{
+  const openBtn = e.target.closest('[data-open-video]');
+  if(openBtn){ openVideoModal(openBtn.dataset.openVideo); return; }
+
+  const mcBtn = e.target.closest('.clip-mc-opt');
+  if(mcBtn){
+    const code = mcBtn.dataset.code;
+    const group = document.querySelector(`.clip-mc-opts[data-mc="${code}"]`);
+    if(group.dataset.answered) return;
+    group.dataset.answered = '1';
+    const i = parseInt(mcBtn.dataset.i);
+    const correctIdx = clipData[code].check.correct;
+    group.querySelectorAll('.clip-mc-opt').forEach((b,bi)=>{
+      b.setAttribute('disabled','');
+      if(bi===correctIdx) b.classList.add('correct');
+      else if(bi===i) b.classList.add('wrong');
+    });
+    document.getElementById('note-'+code).classList.add('shown');
+  }
+});
+
+// ---------- INIT ----------
+(async function init(){
+  await loadState();
+  renderDays(week1Days, 'week1Days');
+  renderDays(week2Days, 'week2Days');
+  renderRules();
+  renderCalls();
+  renderTrainingClipDiagrams();
+  renderPositions();
+  renderTraining(training1, 'training1');
+  renderTraining(training2, 'training2');
+  startQuiz(1);
+})();
+
+})();
+document.addEventListener("DOMContentLoaded",renderDeepDive);
+</script>
+</body>
+</html>
